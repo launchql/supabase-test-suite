@@ -29,7 +29,7 @@ afterEach(async () => {
 
 describe('RLS Demo - Data Insertion', () => {
   it('should insert users and products', async () => {
-    // insert users
+    // Insert users
     const user1 = await pg.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
@@ -44,7 +44,7 @@ describe('RLS Demo - Data Insertion', () => {
       ['bob@example.com', 'Bob Smith']
     );
 
-    // insert products
+    // Insert products
     db.setContext({
       role: 'authenticated',
       'jwt.claims.user_id': user1.id
@@ -204,12 +204,12 @@ describe('RLS Demo - Data Insertion', () => {
   });
 
   it('should fail RLS when not authenticated', async () => {
-    // clear context to simulate unauthenticated user
+    // Clear context to simulate unauthenticated user
     db.setContext({
       role: 'anon'
     });
 
-    // these should all fail because we're not authenticated
+    // These should all fail because we're not authenticated
     await expect(
       db.one(`SELECT id FROM rls_test.users LIMIT 1`)
     ).rejects.toThrow();
