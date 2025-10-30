@@ -5,6 +5,13 @@ let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
+  // use existing supabase database connection
+  process.env.PGHOST = '127.0.0.1';
+  process.env.PGPORT = '54322';
+  process.env.PGUSER = 'supabase_admin';
+  process.env.PGPASSWORD = 'postgres';
+  process.env.PGDATABASE = 'postgres';
+  
   ({ pg, db, teardown } = await getConnections());
 });
 
@@ -22,7 +29,7 @@ afterEach(async () => {
 
 describe('RLS Demo - Data Insertion', () => {
   it('should insert users and products', async () => {
-    // Insert users
+    // insert users
     const user1 = await pg.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
@@ -37,7 +44,7 @@ describe('RLS Demo - Data Insertion', () => {
       ['bob@example.com', 'Bob Smith']
     );
 
-    // Insert products
+    // insert products
     db.setContext({
       role: 'authenticated',
       'jwt.claims.user_id': user1.id
@@ -69,7 +76,49 @@ describe('RLS Demo - Data Insertion', () => {
     expect(product2.name).toBe('Wireless Mouse');
   });
 
+
   it('should query user products with joins', async () => {
+    // insert test data first
+    const user1 = await pg.one(
+      `INSERT INTO rls_test.users (email, name) 
+       VALUES ($1, $2) 
+       RETURNING id, email, name`,
+      ['charlie@example.com', 'Charlie Brown']
+    );
+    
+    const user2 = await pg.one(
+      `INSERT INTO rls_test.users (email, name) 
+       VALUES ($1, $2) 
+       RETURNING id, email, name`,
+      ['diana@example.com', 'Diana Prince']
+    );
+
+    // insert products
+    db.setContext({
+      role: 'authenticated',
+      'jwt.claims.user_id': user1.id
+    });
+
+    await db.one(
+      `INSERT INTO rls_test.products (name, description, price, owner_id) 
+       VALUES ($1, $2, $3, $4) 
+       RETURNING id, name, price, owner_id`,
+      ['Gaming Keyboard', 'Mechanical gaming keyboard', 199.99, user1.id]
+    );
+    
+    db.setContext({
+      role: 'authenticated',
+      'jwt.claims.user_id': user2.id
+    });
+
+    await db.one(
+      `INSERT INTO rls_test.products (name, description, price, owner_id) 
+       VALUES ($1, $2, $3, $4) 
+       RETURNING id, name, price, owner_id`,
+      ['Gaming Mouse', 'High DPI gaming mouse', 89.99, user2.id]
+    );
+
+    // now query the data
     const result = await db.many(
       `SELECT u.name, p.name as product_name, p.price
        FROM rls_test.users u
@@ -83,24 +132,29 @@ describe('RLS Demo - Data Insertion', () => {
   });
 
   it('should test RLS context switching', async () => {
-    // Get a user ID for context
-    const user = await db.one(`SELECT id FROM rls_test.users LIMIT 1`);
+    // insert test user first
+    const user = await pg.one(
+      `INSERT INTO rls_test.users (email, name) 
+       VALUES ($1, $2) 
+       RETURNING id, email, name`,
+      ['eve@example.com', 'Eve Wilson']
+    );
     
-    // Set context to simulate authenticated user with JWT claims
+    // set context to simulate authenticated user with jwt claims
     db.setContext({
       role: 'authenticated',
       'jwt.claims.user_id': user.id
     });
 
-    // Test auth.uid() function
+    // test auth.uid() function
     const uid = await db.one(`SELECT auth.uid() as uid`);
     expect(uid.uid).toBe(user.id);
 
-    // Test auth.role() function
+    // test auth.role() function
     const role = await db.one(`SELECT auth.role() as role`);
     expect(role.role).toBe('authenticated');
 
-    // Query should work with RLS policies
+    // query should work with rls policies
     const userData = await db.one(
       `SELECT id, email FROM rls_test.users WHERE id = $1`,
       [user.id]
@@ -110,44 +164,52 @@ describe('RLS Demo - Data Insertion', () => {
   });
 
   it('should fail RLS when trying to access other user\'s data', async () => {
-    // Get two different users
-    const users = await db.many(`SELECT id FROM rls_test.users ORDER BY email LIMIT 2`);
-    expect(users.length).toBeGreaterThanOrEqual(2);
+    // insert two test users
+    const user1 = await pg.one(
+      `INSERT INTO rls_test.users (email, name) 
+       VALUES ($1, $2) 
+       RETURNING id, email, name`,
+      ['frank@example.com', 'Frank Miller']
+    );
     
-    const user1 = users[0];
-    const user2 = users[1];
+    const user2 = await pg.one(
+      `INSERT INTO rls_test.users (email, name) 
+       VALUES ($1, $2) 
+       RETURNING id, email, name`,
+      ['grace@example.com', 'Grace Lee']
+    );
     
-    // Set context to user1
+    // set context to user1
     db.setContext({
       role: 'authenticated',
       'jwt.claims.user_id': user1.id
     });
 
-    // This should work - user1 accessing their own data
+    // this should work - user1 accessing their own data
     const ownData = await db.one(
       `SELECT id, email FROM rls_test.users WHERE id = $1`,
       [user1.id]
     );
     expect(ownData.id).toBe(user1.id);
 
-    // This should fail - user1 trying to access user2's data
+    // this should fail - user1 trying to access user2's data
     await expect(
       db.one(`SELECT id, email FROM rls_test.users WHERE id = $1`, [user2.id])
     ).rejects.toThrow();
 
-    // This should also fail - user1 trying to access user2's products
+    // this should also fail - user1 trying to access user2's products
     await expect(
       db.one(`SELECT id, name FROM rls_test.products WHERE owner_id = $1`, [user2.id])
     ).rejects.toThrow();
   });
 
   it('should fail RLS when not authenticated', async () => {
-    // Clear context to simulate unauthenticated user
+    // clear context to simulate unauthenticated user
     db.setContext({
       role: 'anon'
     });
 
-    // These should all fail because we're not authenticated
+    // these should all fail because we're not authenticated
     await expect(
       db.one(`SELECT id FROM rls_test.users LIMIT 1`)
     ).rejects.toThrow();

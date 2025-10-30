@@ -1,10 +1,18 @@
 import { getConnections, PgTestClient } from 'pgsql-test';
 
+let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  ({ db, teardown } = await getConnections());
+  // use existing supabase database connection
+  process.env.PGHOST = '127.0.0.1';
+  process.env.PGPORT = '54322';
+  process.env.PGUSER = 'supabase_admin';
+  process.env.PGPASSWORD = 'postgres';
+  process.env.PGDATABASE = 'postgres';
+  
+  ({ pg, db, teardown } = await getConnections());
 });
 
 afterAll(async () => {
@@ -26,22 +34,22 @@ describe('RLS Demo - Data Insertion', () => {
       role: 'service_role',
     });
 
-    // Insert users
-    const user1 = await db.one(
+    // insert users using pg client (has more permissions)
+    const user1 = await pg.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id, email, name`,
       ['alice@example.com', 'Alice Johnson']
     );
 
-    const user2 = await db.one(
+    const user2 = await pg.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id, email, name`,
       ['bob@example.com', 'Bob Smith']
     );
 
-    // Insert products
+    // insert products
     db.setContext({
       role: 'authenticated',
       'jwt.claims.user_id': user1.id
@@ -74,11 +82,7 @@ describe('RLS Demo - Data Insertion', () => {
   });
 
   it('should rollback to initial state', async () => {
-    db.setContext({
-      role: 'service_role'
-    });
-
-    const result = await db.any(
+    const result = await pg.any(
       `SELECT u.name, p.name as product_name, p.price
        FROM rls_test.users u
        JOIN rls_test.products p ON u.id = p.owner_id
