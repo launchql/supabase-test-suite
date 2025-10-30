@@ -16,9 +16,9 @@ jobs:
 
     services:
       pg_db:
-        image: pyramation/pgvector:13.3-alpine
+        image: supabase/postgres:17.6.1.013
         env:
-          POSTGRES_USER: postgres
+          POSTGRES_USER: supabase_admin
           POSTGRES_PASSWORD: password
         options: >-
           --health-cmd pg_isready
@@ -66,24 +66,6 @@ jobs:
 
       - name: Build
         run: pnpm -r build
-
-      - name: Create roles
-        run: psql -f roles.sql
-        env:
-          PGHOST: pg_db
-          PGPORT: 5432
-          PGUSER: postgres
-          PGPASSWORD: password
-
-      - name: Seed app_user
-        run: |
-          lql admin-users bootstrap --yes
-          lql admin-users add --test --yes
-        env:
-          PGHOST: pg_db
-          PGPORT: 5432
-          PGUSER: postgres
-          PGPASSWORD: password
 
   test:
     needs: setup
@@ -94,9 +76,6 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - verify
-          - base32
-          - totp
           - rls-demo
 
     env:
@@ -107,9 +86,9 @@ jobs:
 
     services:
       pg_db:
-        image: pyramation/pgvector:13.3-alpine
+        image: supabase/postgres:17.6.1.013
         env:
-          POSTGRES_USER: postgres
+          POSTGRES_USER: supabase_admin
           POSTGRES_PASSWORD: password
         options: >-
           --health-cmd pg_isready
@@ -157,14 +136,6 @@ jobs:
 
       - name: Build
         run: pnpm -r build
-
-      - name: Create roles
-        run: psql -f roles.sql
-
-      - name: Seed app_user
-        run: |
-          lql admin-users bootstrap --yes
-          lql admin-users add --test --yes
 
       - name: Test ${{ matrix.package }}
         run: cd ./packages/${{ matrix.package }} && pnpm test

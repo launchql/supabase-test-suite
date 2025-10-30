@@ -38,27 +38,39 @@ describe('RLS Demo - Data Insertion', () => {
     );
 
     // Insert products
-    const product1 = await pg.one(
+    db.setContext({
+      role: 'authenticated',
+      'jwt.claims.user_id': user1.id
+    });
+
+    const product1 = await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id, name, price, owner_id`,
       ['Laptop Pro', 'High-performance laptop', 1299.99, user1.id]
     );
     
-    const product2 = await pg.one(
+    db.setContext({
+      role: 'authenticated',
+      'jwt.claims.user_id': user2.id
+    });
+
+    const product2 = await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id, name, price, owner_id`,
-      ['Wireless Mouse', 'Ergonomic mouse', 49.99, user1.id]
+      ['Wireless Mouse', 'Ergonomic mouse', 49.99, user2.id]
     );
 
     expect(user1.email).toBe('alice@example.com');
     expect(product1.name).toBe('Laptop Pro');
     expect(product1.owner_id).toEqual(user1.id);
+    expect(product2.owner_id).toEqual(user2.id);
+    expect(product2.name).toBe('Wireless Mouse');
   });
 
   it('should query user products with joins', async () => {
-    const result = await pg.many(
+    const result = await db.many(
       `SELECT u.name, p.name as product_name, p.price
        FROM rls_test.users u
        JOIN rls_test.products p ON u.id = p.owner_id
@@ -72,7 +84,7 @@ describe('RLS Demo - Data Insertion', () => {
 
   it('should test RLS context switching', async () => {
     // Get a user ID for context
-    const user = await pg.one(`SELECT id FROM rls_test.users LIMIT 1`);
+    const user = await db.one(`SELECT id FROM rls_test.users LIMIT 1`);
     
     // Set context to simulate authenticated user with JWT claims
     db.setContext({
@@ -99,7 +111,7 @@ describe('RLS Demo - Data Insertion', () => {
 
   it('should fail RLS when trying to access other user\'s data', async () => {
     // Get two different users
-    const users = await pg.many(`SELECT id FROM rls_test.users ORDER BY email LIMIT 2`);
+    const users = await db.many(`SELECT id FROM rls_test.users ORDER BY email LIMIT 2`);
     expect(users.length).toBeGreaterThanOrEqual(2);
     
     const user1 = users[0];

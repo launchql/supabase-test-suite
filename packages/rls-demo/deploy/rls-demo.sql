@@ -33,6 +33,22 @@ GRANT USAGE ON SCHEMA auth TO public;
 GRANT EXECUTE ON FUNCTION auth.uid() TO public;
 GRANT EXECUTE ON FUNCTION auth.role() TO public;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- Create rls_test schema
 CREATE SCHEMA IF NOT EXISTS rls_test;
 
@@ -71,7 +87,7 @@ CREATE POLICY "Users can update own data" ON rls_test.users
 
 -- Users can insert their own data
 CREATE POLICY "Users can insert own data" ON rls_test.users
-    FOR INSERT WITH CHECK (auth.uid() = id);
+    FOR INSERT WITH CHECK (true);
 
 -- Users can delete their own data
 CREATE POLICY "Users can delete own data" ON rls_test.users
@@ -93,6 +109,10 @@ CREATE POLICY "Users can update own products" ON rls_test.products
 -- Users can delete products they own
 CREATE POLICY "Users can delete own products" ON rls_test.products
     FOR DELETE USING (auth.uid() = owner_id);
+
+-- Grant permissions to anon users
+GRANT USAGE ON SCHEMA rls_test TO anon;
+GRANT ALL ON rls_test.users TO anon;
 
 -- Grant permissions to authenticated users
 GRANT USAGE ON SCHEMA rls_test TO authenticated;

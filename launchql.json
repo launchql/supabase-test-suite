@@ -7,7 +7,7 @@
       "anonymous": "anon",
       "authenticated": "authenticated",
       "administrator": "service_role",
-      "default": "anonymous"
+      "default": "anon"
     }
   }
 }

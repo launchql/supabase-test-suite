@@ -72,40 +72,7 @@ importers:
         specifier: ^5.1.6
         version: 5.9.2
 
-  packages/base32:
-    dependencies:
-      '@lql-pg/verify':
-        specifier: workspace:*
-        version: link:../verify
-    devDependencies:
-      '@launchql/cli':
-        specifier: ^4.9.0
-        version: 4.9.0(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))
-
   packages/rls-demo:
-    dependencies:
-      '@lql-pg/verify':
-        specifier: workspace:*
-        version: link:../verify
-    devDependencies:
-      '@launchql/cli':
-        specifier: ^4.9.0
-        version: 4.9.0(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))
-
-  packages/totp:
-    dependencies:
-      '@lql-pg/base32':
-        specifier: workspace:*
-        version: link:../base32
-      '@lql-pg/verify':
-        specifier: workspace:*
-        version: link:../verify
-    devDependencies:
-      '@launchql/cli':
-        specifier: ^4.9.0
-        version: 4.9.0(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))
-
-  packages/verify:
     devDependencies:
       '@launchql/cli':
         specifier: ^4.9.0

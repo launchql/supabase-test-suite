@@ -10,9 +10,6 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "dependencies": {
-    "@lql-pg/verify": "workspace:*"
-  },
   "devDependencies": {
     "@launchql/cli": "^4.9.0"
   }
