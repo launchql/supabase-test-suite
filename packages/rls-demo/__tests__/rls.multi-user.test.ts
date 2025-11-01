@@ -6,12 +6,6 @@ let teardown: () => Promise<void>;
 
 beforeAll(async () => {
   // use existing supabase database connection
-  process.env.PGHOST = '127.0.0.1';
-  process.env.PGPORT = '54322';
-  process.env.PGUSER = 'supabase_admin';
-  process.env.PGPASSWORD = 'postgres';
-  process.env.PGDATABASE = 'postgres';
-  
   ({ pg, db, teardown } = await getConnections());
 });
 
