@@ -1,10 +1,17 @@
 import { getConnections, PgTestClient } from 'pgsql-test';
 
+let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  ({ db, teardown } = await getConnections());
+  ({ pg, db, teardown } = await getConnections());
+  await pg.any(
+    `GRANT USAGE ON SCHEMA auth TO public;
+     GRANT EXECUTE ON FUNCTION auth.uid() TO public;
+     GRANT EXECUTE ON FUNCTION auth.role() TO public;`,
+    []
+  );
 });
 
 afterAll(async () => {
@@ -321,27 +328,34 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
       'request.jwt.claim.sub': user.id
     });
 
+    db.setContext({ role: 'service_role' });
+
     // verify auth.uid() returns correct user id
     const uidResult = await db.one(`SELECT auth.uid() as uid`);
     expect(uidResult.uid).toBe(user.id);
 
-    // // verify auth.role() returns correct role
-    // const roleResult = await db.one(`SELECT auth.role() as role`);
-    // expect(roleResult.role).toBe('authenticated');
+    db.setContext({
+      role: 'authenticated',
+      'request.jwt.claim.role': "authenticated"
+    });
 
-    // // verify these work in product queries
-    // const products = await db.any(
-    //   `SELECT 
-    //      p.name,
-    //      auth.uid() as current_user_id,
-    //      auth.role() as current_role
-    //    FROM rls_test.products p
-    //    WHERE p.owner_id = auth.uid()`
-    // );
+    // verify auth.role() returns correct role
+    const roleResult = await db.one(`SELECT auth.role() as role`);
+    expect(roleResult.role).toBe('authenticated');
 
-    // // should be empty since no products exist yet, but query should work
-    // expect(Array.isArray(products)).toBe(true);
-    // expect(products.length).toBe(0);
+    // verify these work in product queries
+    const products = await db.any(
+      `SELECT 
+         p.name,
+         auth.uid() as current_user_id,
+         auth.role() as current_role
+       FROM rls_test.products p
+       WHERE p.owner_id = auth.uid()`
+    );
+
+    // should be empty since no products exist yet, but query should work
+    expect(Array.isArray(products)).toBe(true);
+    expect(products.length).toBe(0);
   });
 });
 
