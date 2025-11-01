@@ -1,0 +1,7 @@
+# auth extension
+comment = 'auth extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/auth'
+requires = 'plpgsql'
+relocatable = false
+superuser = false
