@@ -13,16 +13,21 @@ beforeAll(async () => {
   
   ({ pg, db, teardown } = await getConnections());
   
+  // verify auth schema exists
+  const authSchemaExists = await pg.any(
+    `SELECT EXISTS (
+      SELECT FROM information_schema.schemata 
+      WHERE schema_name = 'auth'
+    ) as exists`
+  );
+  expect(authSchemaExists[0].exists).toBe(true);
+  
   // grant access to auth schema for testing
-  try {
-    await pg.any(
-      `GRANT USAGE ON SCHEMA auth TO public;
-       GRANT SELECT ON ALL TABLES IN SCHEMA auth TO service_role;`,
-      []
-    );
-  } catch (err) {
-    // schema might not exist or grants might already exist
-  }
+  await pg.any(
+    `GRANT USAGE ON SCHEMA auth TO public;
+     GRANT SELECT ON ALL TABLES IN SCHEMA auth TO service_role;`,
+    []
+  );
 });
 
 afterAll(async () => {
@@ -93,18 +98,10 @@ describe('tutorial: auth identities table access', () => {
     
     db.setContext({ role: 'service_role' });
     
-    try {
-      const identities = await db.any(
-        `SELECT * FROM auth.identities LIMIT 10`
-      );
-      expect(Array.isArray(identities)).toBe(true);
-    } catch (err: any) {
-      if (err.message?.includes('permission denied')) {
-        expect(Array.isArray([])).toBe(true);
-      } else {
-        throw err;
-      }
-    }
+    const identities = await db.any(
+      `SELECT * FROM auth.identities LIMIT 10`
+    );
+    expect(Array.isArray(identities)).toBe(true);
   });
 
   it('should verify table has foreign keys if they exist', async () => {
@@ -134,19 +131,12 @@ describe('tutorial: auth identities table access', () => {
     
     db.clearContext();
     
-    try {
-      const result = await db.any(
-        `SELECT * FROM auth.identities LIMIT 1`
-      );
-      
-      expect(result.length).toBe(0);
-    } catch (err: any) {
-      if (err.message?.includes('permission denied')) {
-        expect(true).toBe(true);
-      } else {
-        throw err;
-      }
-    }
+    const result = await db.any(
+      `SELECT * FROM auth.identities LIMIT 1`
+    );
+    
+    // rls should block access, result should be empty
+    expect(result.length).toBe(0);
   });
 });
 

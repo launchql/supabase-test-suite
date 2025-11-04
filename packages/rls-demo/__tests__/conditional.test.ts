@@ -13,17 +13,22 @@ beforeAll(async () => {
   
   ({ pg, db, teardown } = await getConnections());
   
+  // verify auth schema exists
+  const authSchemaExists = await pg.any(
+    `SELECT EXISTS (
+      SELECT FROM information_schema.schemata 
+      WHERE schema_name = 'auth'
+    ) as exists`
+  );
+  expect(authSchemaExists[0].exists).toBe(true);
+  
   // grant access to auth schema for testing
-  try {
-    await pg.any(
-      `GRANT USAGE ON SCHEMA auth TO public;
-       GRANT EXECUTE ON FUNCTION auth.uid() TO public;
-       GRANT EXECUTE ON FUNCTION auth.role() TO public;`,
-      []
-    );
-  } catch (err) {
-    // schema might not exist or grants might already exist
-  }
+  await pg.any(
+    `GRANT USAGE ON SCHEMA auth TO public;
+     GRANT EXECUTE ON FUNCTION auth.uid() TO public;
+     GRANT EXECUTE ON FUNCTION auth.role() TO public;`,
+    []
+  );
 });
 
 afterAll(async () => {
