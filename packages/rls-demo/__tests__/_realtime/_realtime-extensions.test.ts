@@ -4,19 +4,40 @@ let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
+let tableExists = false;
+
 beforeAll(async () => {
-  
-  
   ({ pg, db, teardown } = await getConnections());
   
-  // grant access to _realtime schema for testing
-  try {
+  // verify _realtime schema exists (optional schema)
+  const realtimeSchemaExists = await pg.any(
+    `SELECT EXISTS (
+      SELECT FROM information_schema.schemata 
+      WHERE schema_name = '_realtime'
+    ) as exists`
+  );
+  
+  if (realtimeSchemaExists[0]?.exists === true) {
+    // grant access to _realtime schema for testing
     await pg.any(
-      `GRANT USAGE ON SCHEMA _realtime TO public;`,
+      `GRANT USAGE ON SCHEMA _realtime TO public;
+       GRANT SELECT ON ALL TABLES IN SCHEMA _realtime TO service_role;
+       GRANT SELECT ON ALL TABLES IN SCHEMA _realtime TO authenticated;
+       GRANT SELECT ON ALL TABLES IN SCHEMA _realtime TO anon;
+       ALTER DEFAULT PRIVILEGES IN SCHEMA _realtime GRANT SELECT ON TABLES TO service_role;
+       ALTER DEFAULT PRIVILEGES IN SCHEMA _realtime GRANT SELECT ON TABLES TO authenticated;
+       ALTER DEFAULT PRIVILEGES IN SCHEMA _realtime GRANT SELECT ON TABLES TO anon;`,
       []
     );
-  } catch (err) {
-    // schema might not exist
+    
+    // check if _realtime.extensions table exists (using pg in beforeAll only)
+    const exists = await pg.any(
+      `SELECT EXISTS (
+        SELECT FROM information_schema.tables 
+        WHERE table_schema = '_realtime' AND table_name = 'extensions'
+      ) as exists`
+    );
+    tableExists = exists[0]?.exists === true;
   }
 });
 
@@ -33,22 +54,11 @@ afterEach(async () => {
 });
 
 describe('tutorial: _realtime extensions table access', () => {
-  let tableExists = false;
-
-  beforeAll(async () => {
-    db.setContext({ role: 'service_role' });
-    const exists = await db.any(
-      `SELECT EXISTS (
-        SELECT FROM information_schema.tables 
-        WHERE table_schema = '_realtime' AND table_name = 'extensions'
-      ) as exists`
-    );
-    tableExists = exists[0]?.exists === true;
-  });
 
   it('should verify extensions table exists in _realtime schema', async () => {
     db.setContext({ role: 'service_role' });
     
+    // verify table exists in information schema
     const exists = await db.any(
       `SELECT EXISTS (
         SELECT FROM information_schema.tables 
@@ -71,6 +81,7 @@ describe('tutorial: _realtime extensions table access', () => {
     
     db.setContext({ role: 'service_role' });
     
+    // query table column structure
     const columns = await db.any(
       `SELECT column_name, data_type 
        FROM information_schema.columns 
@@ -86,21 +97,16 @@ describe('tutorial: _realtime extensions table access', () => {
       return;
     }
     
+    // clear context to anon role
     db.clearContext();
     
-    try {
-      const result = await db.any(
-        `SELECT * FROM _realtime.extensions LIMIT 1`
-      );
-      
-      expect(result.length).toBe(0);
-    } catch (err: any) {
-      if (err.message?.includes('permission denied') || err.message?.includes('does not exist')) {
-        expect(true).toBe(true);
-      } else {
-        throw err;
-      }
-    }
+    // anon should not be able to access _realtime.extensions (rls blocks)
+    const result = await db.any(
+      `SELECT * FROM _realtime.extensions LIMIT 1`
+    );
+    
+    // rls should block access, result should be empty
+    expect(result.length).toBe(0);
   });
 
   it('should verify table has proper grants via information_schema', async () => {
@@ -110,6 +116,7 @@ describe('tutorial: _realtime extensions table access', () => {
     
     db.setContext({ role: 'service_role' });
     
+    // check table privileges/grants
     const grants = await db.any(
       `SELECT grantee, privilege_type 
        FROM information_schema.table_privileges 

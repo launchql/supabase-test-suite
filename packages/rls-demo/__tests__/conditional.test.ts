@@ -19,8 +19,10 @@ beforeAll(async () => {
   expect(authSchemaExists[0].exists).toBe(true);
   
   // grant access to auth schema for testing
+  // grant INSERT on auth.users to service_role so we can create test users
   await pg.any(
     `GRANT USAGE ON SCHEMA auth TO public;
+     GRANT INSERT ON TABLE auth.users TO service_role;
      GRANT EXECUTE ON FUNCTION auth.uid() TO public;
      GRANT EXECUTE ON FUNCTION auth.role() TO public;`,
     []
@@ -43,21 +45,41 @@ describe('tutorial: rls with conditional policies', () => {
   it('should verify rls policies can use case statements', async () => {
     db.setContext({ role: 'service_role' });
     
-    const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user1 = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['case1@example.com', 'Case User 1']
+      ['case1@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user1.id, 'case1@example.com', 'Case User 1']
     );
 
-    const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    const user2 = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['case2@example.com', 'Case User 2']
+      ['case2@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user2.id, 'case2@example.com', 'Case User 2']
     );
 
     // create products with different prices
+    // set service_role context for product inserts (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
     await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
@@ -99,13 +121,25 @@ describe('tutorial: rls with conditional policies', () => {
   it('should verify rls policies work with multiple conditions', async () => {
     db.setContext({ role: 'service_role' });
     
-    const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['multi1@example.com', 'Multi Condition User']
+      ['multi1@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user.id, 'multi1@example.com', 'Multi Condition User']
     );
 
+    // set service_role context for product inserts (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
     await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
@@ -145,13 +179,25 @@ describe('tutorial: rls with conditional policies', () => {
   it('should verify rls policies work with or conditions', async () => {
     db.setContext({ role: 'service_role' });
     
-    const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['or1@example.com', 'OR Condition User']
+      ['or1@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user.id, 'or1@example.com', 'OR Condition User']
     );
 
+    // set service_role context for product inserts (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
     await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
@@ -187,20 +233,40 @@ describe('tutorial: rls with conditional policies', () => {
   it('should verify rls policies work with subqueries', async () => {
     db.setContext({ role: 'service_role' });
     
-    const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user1 = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['sub1@example.com', 'Subquery User 1']
+      ['sub1@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user1.id, 'sub1@example.com', 'Subquery User 1']
     );
 
-    const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    const user2 = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['sub2@example.com', 'Subquery User 2']
+      ['sub2@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user2.id, 'sub2@example.com', 'Subquery User 2']
     );
 
+    // set service_role context for product inserts (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
     await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
@@ -240,13 +306,25 @@ describe('tutorial: rls with conditional policies', () => {
   it('should verify rls policies work with related table checks', async () => {
     db.setContext({ role: 'service_role' });
     
-    const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['rel1@example.com', 'Related Table User']
+      ['rel1@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user.id, 'rel1@example.com', 'Related Table User']
     );
 
+    // set service_role context for product insert (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
     await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
@@ -278,14 +356,26 @@ describe('tutorial: rls with conditional policies', () => {
   it('should verify rls policies work with null checks', async () => {
     db.setContext({ role: 'service_role' });
     
-    const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['null1@example.com', 'Null Check User']
+      ['null1@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user.id, 'null1@example.com', 'Null Check User']
     );
 
     // create product with null description
+    // set service_role context for product insert (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
     await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
@@ -316,13 +406,25 @@ describe('tutorial: rls with conditional policies', () => {
   it('should verify rls policies work with coalesce functions', async () => {
     db.setContext({ role: 'service_role' });
     
-    const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['coalesce1@example.com', 'Coalesce User']
+      ['coalesce1@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user.id, 'coalesce1@example.com', 'Coalesce User']
     );
 
+    // set service_role context for product insert (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
     await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 

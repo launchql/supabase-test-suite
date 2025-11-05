@@ -19,9 +19,11 @@ beforeAll(async () => {
   expect(authSchemaExists[0].exists).toBe(true);
   
   // grant access to auth and storage schemas for testing
+  // grant INSERT on auth.users to service_role so we can create test users
   await pg.any(
     `GRANT USAGE ON SCHEMA auth TO public;
      GRANT USAGE ON SCHEMA storage TO public;
+     GRANT INSERT ON TABLE auth.users TO service_role;
      GRANT EXECUTE ON FUNCTION auth.uid() TO public;
      GRANT EXECUTE ON FUNCTION auth.role() TO public;
      GRANT EXECUTE ON FUNCTION auth.email() TO public;`,
@@ -54,11 +56,13 @@ describe('tutorial: rls with supabase functions', () => {
     );
     expect(funcExists[0].exists).toBe(true);
     
-    const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // set service_role context to insert into auth.users (requires INSERT permission)
+    const user = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['func1@example.com', 'Func User 1']
+      ['func1@example.com']
     );
 
     db.setContext({
@@ -104,11 +108,21 @@ describe('tutorial: rls with supabase functions', () => {
     );
     expect(funcExists[0].exists).toBe(true);
     
-    const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id, email`,
-      ['emailfunc@example.com', 'Email Func User']
+      ['emailfunc@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user.id, user.email, 'Email Func User']
     );
 
     db.setContext({
@@ -133,11 +147,21 @@ describe('tutorial: rls with supabase functions', () => {
     );
     expect(funcExists[0].exists).toBe(true);
     
-    const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['policyfunc@example.com', 'Policy Func User']
+      ['policyfunc@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user.id, 'policyfunc@example.com', 'Policy Func User']
     );
 
     db.setContext({
@@ -216,13 +240,25 @@ describe('tutorial: rls with supabase functions', () => {
     );
     expect(funcExists[0].exists).toBe(true);
     
-    const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['wherefunc@example.com', 'Where Func User']
+      ['wherefunc@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user.id, 'wherefunc@example.com', 'Where Func User']
     );
 
+    // set service_role context for product insert (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
     await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
@@ -257,13 +293,25 @@ describe('tutorial: rls with supabase functions', () => {
     );
     expect(funcExists[0].exists).toBe(true);
     
-    const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
-       VALUES ($1, $2) 
+    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // use pg for auth.users insert since it requires superuser privileges
+    const user = await pg.one(
+      `INSERT INTO auth.users (id, email) 
+       VALUES (gen_random_uuid(), $1) 
        RETURNING id`,
-      ['subfunc@example.com', 'Sub Func User']
+      ['subfunc@example.com']
+    );
+    
+    // also insert into rls_test.users to satisfy foreign key constraint from rls_test.products
+    await db.one(
+      `INSERT INTO rls_test.users (id, email, name) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      [user.id, 'subfunc@example.com', 'Sub Func User']
     );
 
+    // set service_role context for product insert (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
     await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 

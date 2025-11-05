@@ -23,15 +23,17 @@ afterEach(async () => {
 
 describe('tutorial: multi-user rls enforcement', () => {
   it('should prevent user from reading another user\'s data', async () => {
+    db.setContext({ role: 'service_role' });
+
     // create two users as admin
-    const user1 = await pg.one(
+    const user1 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['alice@example.com', 'Alice']
     );
 
-    const user2 = await pg.one(
+    const user2 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
@@ -58,15 +60,17 @@ describe('tutorial: multi-user rls enforcement', () => {
   });
 
   it('should prevent user from reading another user\'s products', async () => {
+    db.setContext({ role: 'service_role' });
+
     // create two users as admin
-    const user1 = await pg.one(
+    const user1 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['charlie@example.com', 'Charlie']
     );
 
-    const user2 = await pg.one(
+    const user2 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
@@ -74,14 +78,16 @@ describe('tutorial: multi-user rls enforcement', () => {
     );
 
     // create products for each user
-    await pg.one(
+    // set service_role context for product inserts (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
+    await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
       ['Charlie\'s Product', 'Charlie owns this', 100.00, user1.id]
     );
 
-    await pg.one(
+    await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
@@ -111,15 +117,17 @@ describe('tutorial: multi-user rls enforcement', () => {
   });
 
   it('should prevent user from updating another user\'s data', async () => {
+    db.setContext({ role: 'service_role' });
+
     // create two users as admin
-    const user1 = await pg.one(
+    const user1 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['eve@example.com', 'Eve']
     );
 
-    const user2 = await pg.one(
+    const user2 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
@@ -147,15 +155,17 @@ describe('tutorial: multi-user rls enforcement', () => {
   });
 
   it('should prevent user from updating another user\'s products', async () => {
+    db.setContext({ role: 'service_role' });
+
     // create two users as admin
-    const user1 = await pg.one(
+    const user1 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['grace@example.com', 'Grace']
     );
 
-    const user2 = await pg.one(
+    const user2 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
@@ -163,14 +173,16 @@ describe('tutorial: multi-user rls enforcement', () => {
     );
 
     // create products for each user
-    const product1 = await pg.one(
+    // set service_role context for product inserts (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
+    const product1 = await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
       ['Grace\'s Product', 'Grace owns this', 100.00, user1.id]
     );
 
-    const product2 = await pg.one(
+    const product2 = await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
@@ -199,14 +211,15 @@ describe('tutorial: multi-user rls enforcement', () => {
 
   it('should prevent user from deleting another user\'s products', async () => {
     // create two users as admin
-    const user1 = await pg.one(
+    db.setContext({ role: 'service_role' });
+    const user1 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['iris@example.com', 'Iris']
     );
 
-    const user2 = await pg.one(
+    const user2 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
@@ -214,14 +227,16 @@ describe('tutorial: multi-user rls enforcement', () => {
     );
 
     // create products for each user
-    const product1 = await pg.one(
+    // set service_role context for product inserts (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
+    const product1 = await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
       ['Iris\'s Product', 'Iris owns this', 100.00, user1.id]
     );
 
-    const product2 = await pg.one(
+    const product2 = await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
@@ -249,15 +264,16 @@ describe('tutorial: multi-user rls enforcement', () => {
   });
 
   it('should prevent user from creating products for another user', async () => {
+    db.setContext({ role: 'service_role' });
     // create two users as admin
-    const user1 = await pg.one(
+    const user1 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['karen@example.com', 'Karen']
     );
 
-    const user2 = await pg.one(
+    const user2 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
@@ -291,22 +307,23 @@ describe('tutorial: multi-user rls enforcement', () => {
   });
 
   it('should allow users to see only their own data in list queries', async () => {
+    db.setContext({role: 'service_role'});
     // create multiple users as admin
-    const user1 = await pg.one(
+    const user1 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['mary@example.com', 'Mary']
     );
 
-    const user2 = await pg.one(
+    const user2 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['nancy@example.com', 'Nancy']
     );
 
-    const user3 = await pg.one(
+    const user3 = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,

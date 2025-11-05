@@ -25,8 +25,10 @@ afterEach(async () => {
 
 describe('tutorial: basic rls crud operations', () => {
   it('should allow user to create their own user record', async () => {
+    db.setContext({ role: 'service_role' });
+
     // create user as admin
-    const user = await pg.one(
+    const user = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id, email, name`,
@@ -51,8 +53,10 @@ describe('tutorial: basic rls crud operations', () => {
   });
 
   it('should allow user to create their own products', async () => {
+    db.setContext({ role: 'service_role' });
+
     // create user as admin
-    const user = await pg.one(
+    const user = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
@@ -79,22 +83,26 @@ describe('tutorial: basic rls crud operations', () => {
   });
 
   it('should allow user to read their own products', async () => {
+    db.setContext({ role: 'service_role' });
+
     // create user and product as admin
-    const user = await pg.one(
+    const user = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['tutorial3@example.com', 'Tutorial User 3']
     );
 
-    await pg.one(
+    // set service_role context for product inserts (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
+    await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
       ['Product A', 'Description A', 50.00, user.id]
     );
 
-    await pg.one(
+    await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
@@ -119,8 +127,9 @@ describe('tutorial: basic rls crud operations', () => {
   });
 
   it('should allow user to update their own user record', async () => {
+    db.setContext({ role: 'service_role' });
     // create user as admin
-    const user = await pg.one(
+    const user = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
@@ -149,14 +158,16 @@ describe('tutorial: basic rls crud operations', () => {
 
   it('should allow user to update their own products', async () => {
     // create user and product as admin
-    const user = await pg.one(
+    db.setContext({ role: 'service_role' });
+    const user = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['tutorial5@example.com', 'Tutorial User 5']
     );
 
-    const product = await pg.one(
+    // set service_role context for product insert (rls_test.products needs service_role to bypass rls)
+    const product = await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
@@ -183,22 +194,25 @@ describe('tutorial: basic rls crud operations', () => {
   });
 
   it('should allow user to delete their own products', async () => {
+    db.setContext({ role: 'service_role' });
     // create user and products as admin
-    const user = await pg.one(
+    const user = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['tutorial6@example.com', 'Tutorial User 6']
     );
 
-    const product1 = await pg.one(
+    // set service_role context for product inserts (rls_test.products needs service_role to bypass rls)
+    db.setContext({ role: 'service_role' });
+    const product1 = await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
       ['Product To Delete', 'Will be deleted', 50.00, user.id]
     );
 
-    const product2 = await pg.one(
+    const product2 = await db.one(
       `INSERT INTO rls_test.products (name, description, price, owner_id) 
        VALUES ($1, $2, $3, $4) 
        RETURNING id`,
@@ -229,8 +243,9 @@ describe('tutorial: basic rls crud operations', () => {
   });
 
   it('should allow user to delete their own user record', async () => {
+    db.setContext({ role: 'service_role' });
     // create user as admin
-    const user = await pg.one(
+    const user = await db.one(
       `INSERT INTO rls_test.users (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
