@@ -1010,7 +1010,8 @@ CREATE EVENT TRIGGER pgrst_drop_watch ON sql_drop
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
-
+-- TODO: organize these sections into there own files
+-- idea their own packages too..
 
 
 
@@ -1095,3 +1096,55 @@ CREATE TABLE supabase_functions.hooks (
 CREATE INDEX supabase_functions_hooks_request_id_idx ON supabase_functions.hooks USING btree (request_id);
 CREATE INDEX supabase_functions_hooks_h_table_id_h_name_idx ON supabase_functions.hooks USING btree (hook_table_id, hook_name);
 COMMENT ON TABLE supabase_functions.hooks IS 'Supabase Functions Hooks: Audit trail for triggered hooks.';
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------- FOR AUTH FLOW STATE
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+-------------------auth.flow_state https://github.com/supabase/auth/blob/master/migrations/20230322519590_add_flow_state_table.up.sql
+
+
+create type code_challenge_method as enum('s256', 'plain');
+create table if not exists auth.flow_state(
+       id uuid primary key,
+       user_id uuid null,
+       auth_code text not null,
+       code_challenge_method code_challenge_method not null,
+       code_challenge text not null,
+       provider_type text not null,
+       provider_access_token text null,
+       provider_refresh_token text null,
+       created_at timestamptz null,
+       updated_at timestamptz null
+);
+
+
+------------------------------------------------------------------------------- FOR IDENTITIES
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+-------------------auth.identities https://github.com/supabase/auth/blob/master/migrations/20210909172000_create_identities_table.up.sql
+
+CREATE TABLE IF NOT EXISTS auth.identities (
+    id text NOT NULL,
+    user_id uuid NOT NULL,
+    identity_data JSONB NOT NULL,
+    provider text NOT NULL,
+    last_sign_in_at timestamptz NULL,
+    created_at timestamptz NULL,
+    updated_at timestamptz NULL,
+    CONSTRAINT identities_pkey PRIMARY KEY (provider, id),
+    CONSTRAINT identities_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE
+);

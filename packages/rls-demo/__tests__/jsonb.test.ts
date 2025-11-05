@@ -4,7 +4,6 @@ let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
-let jsonbTableExists = false;
 let testBucketId: string;
 
 beforeAll(async () => {
@@ -32,25 +31,52 @@ beforeAll(async () => {
     []
   );
   
-  // check if storage.objects table exists (using pg in beforeAll only)
-  const exists = await pg.any(
+  // grant insert on buckets table for bucket creation (using pg for setup)
+  await pg.any(
+    `GRANT INSERT ON TABLE storage.buckets TO service_role;`,
+    []
+  );
+  
+  // verify storage.objects table exists (required for jsonb tests)
+  const objectsExists = await pg.any(
     `SELECT EXISTS (
       SELECT FROM information_schema.tables 
       WHERE table_schema = 'storage' AND table_name = 'objects'
     ) as exists`
   );
-  jsonbTableExists = exists[0]?.exists === true;
-
-  // get an existing bucket for testing (using db with service_role)
-  if (jsonbTableExists) {
-    db.setContext({ role: 'service_role' });
-    const buckets = await db.any(
-      `SELECT id FROM storage.buckets LIMIT 1`
+  expect(objectsExists[0].exists).toBe(true);
+  
+  // verify buckets table exists (required for storage.objects)
+  const bucketsExists = await pg.any(
+    `SELECT EXISTS (
+      SELECT FROM information_schema.tables 
+      WHERE table_schema = 'storage' AND table_name = 'buckets'
+    ) as exists`
+  );
+  expect(bucketsExists[0].exists).toBe(true);
+  
+  // ensure we have a bucket for testing (create if none exists)
+  // storage.objects requires a valid bucket_id, so we need a bucket
+  const buckets = await pg.any(
+    `SELECT id FROM storage.buckets LIMIT 1`
+  );
+  
+  if (buckets.length > 0) {
+    testBucketId = buckets[0].id;
+  } else {
+    // create a test bucket if none exists (using pg for setup in beforeAll)
+    const newBucket = await pg.any(
+      `INSERT INTO storage.buckets (id, name) 
+       VALUES ($1, $2) 
+       RETURNING id`,
+      ['jsonb-test-bucket', 'jsonb-test-bucket']
     );
-    if (buckets.length > 0) {
-      testBucketId = buckets[0].id;
-    }
+    expect(newBucket.length).toBeGreaterThan(0);
+    testBucketId = newBucket[0].id;
   }
+  
+  // verify we have a bucket id (required for testing)
+  expect(testBucketId).toBeDefined();
 });
 
 afterAll(async () => {
@@ -68,8 +94,6 @@ afterEach(async () => {
 describe('tutorial: rls with jsonb columns on supabase tables', () => {
 
   it('should verify storage.objects has metadata jsonb column', async () => {
-    expect(jsonbTableExists).toBe(true);
-    
     db.setContext({ role: 'service_role' });
     
     const columns = await db.any(
@@ -85,8 +109,6 @@ describe('tutorial: rls with jsonb columns on supabase tables', () => {
   });
 
   it('should verify service_role can query jsonb metadata fields', async () => {
-    expect(jsonbTableExists).toBe(true);
-    
     db.setContext({ role: 'service_role' });
     
     // query metadata jsonb field
@@ -106,8 +128,6 @@ describe('tutorial: rls with jsonb columns on supabase tables', () => {
   });
 
   it('should verify jsonb path queries work with rls', async () => {
-    expect(jsonbTableExists).toBe(true);
-    
     db.setContext({ role: 'service_role' });
     
     // test jsonb path queries (e.g., metadata->>'key')
@@ -124,8 +144,6 @@ describe('tutorial: rls with jsonb columns on supabase tables', () => {
   });
 
   it('should verify jsonb filtering works with rls', async () => {
-    expect(jsonbTableExists).toBe(true);
-    
     db.setContext({ role: 'service_role' });
     
     // test filtering by jsonb field values
@@ -141,8 +159,6 @@ describe('tutorial: rls with jsonb columns on supabase tables', () => {
   });
 
   it('should verify jsonb array operations with rls', async () => {
-    expect(jsonbTableExists).toBe(true);
-    
     db.setContext({ role: 'service_role' });
     
     // test jsonb array operations (if metadata has arrays)
@@ -159,8 +175,6 @@ describe('tutorial: rls with jsonb columns on supabase tables', () => {
   });
 
   it('should verify anon cannot access jsonb metadata', async () => {
-    expect(jsonbTableExists).toBe(true);
-    
     db.setContext({ role: 'anon' });
     
     const result = await db.any(
@@ -175,43 +189,37 @@ describe('tutorial: rls with jsonb columns on supabase tables', () => {
   });
 
   it('should verify jsonb updates respect rls', async () => {
-    expect(jsonbTableExists).toBe(true);
-    
     db.setContext({ role: 'service_role' });
     
-    // try to insert an object with jsonb metadata (if we have bucket access)
-    if (testBucketId) {
-      const testObject = await db.any(
-        `INSERT INTO storage.objects (bucket_id, name, metadata) 
-         VALUES ($1, $2, $3::jsonb) 
-         RETURNING id, name, metadata`,
-        [
-          testBucketId,
-          'test-jsonb-object.json',
-          JSON.stringify({ contentType: 'application/json', size: 100, customField: 'test' })
-        ]
-      );
-      
-      if (testObject.length > 0) {
-        expect(testObject[0].metadata).toBeDefined();
-        expect(typeof testObject[0].metadata).toBe('object');
-        
-        // verify jsonb path query works on inserted data
-        const retrieved = await db.any(
-          `SELECT id, metadata->>'contentType' as content_type
-           FROM storage.objects 
-           WHERE id = $1`,
-          [testObject[0].id]
-        );
-        
-        expect(retrieved.length).toBeGreaterThan(0);
-      }
-    }
+    // insert an object with jsonb metadata
+    const testObject = await db.any(
+      `INSERT INTO storage.objects (bucket_id, name, metadata) 
+       VALUES ($1, $2, $3::jsonb) 
+       RETURNING id, name, metadata`,
+      [
+        testBucketId,
+        'test-jsonb-object.json',
+        JSON.stringify({ contentType: 'application/json', size: 100, customField: 'test' })
+      ]
+    );
+    
+    expect(testObject.length).toBeGreaterThan(0);
+    expect(testObject[0].metadata).toBeDefined();
+    expect(typeof testObject[0].metadata).toBe('object');
+    
+    // verify jsonb path query works on inserted data
+    const retrieved = await db.any(
+      `SELECT id, metadata->>'contentType' as content_type
+       FROM storage.objects 
+       WHERE id = $1`,
+      [testObject[0].id]
+    );
+    
+    expect(retrieved.length).toBeGreaterThan(0);
+    expect(retrieved[0].content_type).toBe('application/json');
   });
 
   it('should verify jsonb nested field queries with rls', async () => {
-    expect(jsonbTableExists).toBe(true);
-    
     db.setContext({ role: 'service_role' });
     
     // test nested jsonb field queries (e.g., metadata->'nested'->>'field')
