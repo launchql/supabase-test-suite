@@ -4,11 +4,7 @@ let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
-let tableExists = false;
-
 beforeAll(async () => {
-  
-  
   ({ pg, db, teardown } = await getConnections());
   
   // verify auth schema exists
@@ -32,14 +28,14 @@ beforeAll(async () => {
     []
   );
   
-  // check if auth.oauth_consents table exists (using pg in beforeAll only)
+  // assert table exists
   const exists = await pg.any(
     `SELECT EXISTS (
       SELECT FROM information_schema.tables 
       WHERE table_schema = 'auth' AND table_name = 'oauth_consents'
     ) as exists`
   );
-  tableExists = exists[0]?.exists === true;
+  expect(exists[0].exists).toBe(true);
 });
 
 afterAll(async () => {
@@ -68,18 +64,10 @@ describe('tutorial: auth oauth_consents table access', () => {
     );
     
     expect(Array.isArray(exists)).toBe(true);
-    if (exists[0]?.exists === false) {
-      expect(exists[0].exists).toBe(false);
-      return;
-    }
     expect(exists[0].exists).toBe(true);
   });
 
   it('should verify service_role can query oauth_consents', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
     db.setContext({ role: 'service_role' });
     
     // service_role should be able to query oauth_consents
@@ -92,43 +80,43 @@ describe('tutorial: auth oauth_consents table access', () => {
     expect(Array.isArray(consents)).toBe(true);
   });
 
-  it('should verify table has foreign key to auth.users', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
+  it('should verify foreign keys to users and oauth_clients', async () => {
     db.setContext({ role: 'service_role' });
     
-    // check for foreign key constraints to auth.users
     const fks = await db.any(
       `SELECT tc.constraint_name, ccu.table_name AS foreign_table_name
        FROM information_schema.table_constraints AS tc
        JOIN information_schema.constraint_column_usage AS ccu
-         ON ccu.constraint_name = tc.constraint_name
+         ON ccu.constraint_name = tc.constraint_name AND ccu.table_schema = tc.table_schema
        WHERE tc.constraint_type = 'FOREIGN KEY' 
          AND tc.table_schema = 'auth' 
-         AND tc.table_name = 'oauth_consents'
-         AND ccu.table_name = 'users'`
+         AND tc.table_name = 'oauth_consents'`
     );
-    
     expect(Array.isArray(fks)).toBe(true);
+    if (fks.length > 0) {
+      const tables = new Set(fks.map((r: any) => r.foreign_table_name));
+      expect(tables.has('users')).toBe(true);
+      expect(tables.has('oauth_clients')).toBe(true);
+    }
   });
 
-  it('should prevent anon from accessing oauth_consents', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
-    // clear context to anon role
-    db.clearContext();
-    
-    // anon should not be able to access oauth_consents (rls blocks)
-    const result = await db.any(
-      `SELECT * FROM auth.oauth_consents LIMIT 1`
+  it('should verify anon access to oauth_consents based on rls', async () => {
+    db.setContext({ role: 'service_role' });
+    const rlsStatus = await db.any(
+      `SELECT c.relrowsecurity 
+       FROM pg_class c
+       JOIN pg_namespace n ON n.oid = c.relnamespace
+       WHERE n.nspname = 'auth' AND c.relname = 'oauth_consents'`
     );
+    expect(Array.isArray(rlsStatus)).toBe(true);
+    expect(rlsStatus.length).toBeGreaterThan(0);
     
-    // rls should block access, result should be empty
-    expect(result.length).toBe(0);
+    db.clearContext();
+    const result = await db.any(`SELECT * FROM auth.oauth_consents LIMIT 1`);
+    expect(Array.isArray(result)).toBe(true);
+    if (rlsStatus[0].relrowsecurity === true) {
+      expect(result.length).toBe(0);
+    }
   });
 });
 

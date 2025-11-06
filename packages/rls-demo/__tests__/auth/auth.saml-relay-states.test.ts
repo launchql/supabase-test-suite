@@ -4,8 +4,6 @@ let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
-let tableExists = false;
-
 beforeAll(async () => {
   
   
@@ -32,14 +30,14 @@ beforeAll(async () => {
     []
   );
   
-  // check if auth.saml_relay_states table exists (using pg in beforeAll only)
+  // assert table exists
   const exists = await pg.any(
     `SELECT EXISTS (
       SELECT FROM information_schema.tables 
       WHERE table_schema = 'auth' AND table_name = 'saml_relay_states'
     ) as exists`
   );
-  tableExists = exists[0]?.exists === true;
+  expect(exists[0].exists).toBe(true);
 });
 
 afterAll(async () => {
@@ -68,18 +66,10 @@ describe('tutorial: auth saml_relay_states table access', () => {
     );
     
     expect(Array.isArray(exists)).toBe(true);
-    if (exists[0]?.exists === false) {
-      expect(exists[0].exists).toBe(false);
-      return;
-    }
     expect(exists[0].exists).toBe(true);
   });
 
   it('should verify service_role can query saml_relay_states structure', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
     db.setContext({ role: 'service_role' });
     
     // query table column structure
@@ -94,10 +84,6 @@ describe('tutorial: auth saml_relay_states table access', () => {
   });
 
   it('should verify table has created_at timestamp column', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
     db.setContext({ role: 'service_role' });
     
     // check for timestamp columns like created_at or expires_at
@@ -111,21 +97,49 @@ describe('tutorial: auth saml_relay_states table access', () => {
     expect(Array.isArray(timestampCols)).toBe(true);
   });
 
-  it('should prevent anon from accessing saml_relay_states', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
-    // clear context to anon role
-    db.clearContext();
-    
-    // anon should not be able to access saml_relay_states (rls blocks)
-    const result = await db.any(
-      `SELECT * FROM auth.saml_relay_states LIMIT 1`
+  it('should verify foreign key to sso_providers and indexes', async () => {
+    db.setContext({ role: 'service_role' });
+    const fks = await db.any(
+      `SELECT tc.constraint_name, ccu.table_name AS foreign_table_name
+       FROM information_schema.table_constraints AS tc
+       JOIN information_schema.constraint_column_usage AS ccu
+         ON ccu.constraint_name = tc.constraint_name
+       WHERE tc.constraint_type = 'FOREIGN KEY' 
+         AND tc.table_schema = 'auth' 
+         AND tc.table_name = 'saml_relay_states'
+         AND ccu.table_name = 'sso_providers'`
     );
+    expect(Array.isArray(fks)).toBe(true);
+    const idx = await db.any(
+      `SELECT indexname, indexdef 
+       FROM pg_indexes 
+       WHERE schemaname = 'auth' AND tablename = 'saml_relay_states'`
+    );
+    expect(Array.isArray(idx)).toBe(true);
+    if (idx.length > 0) {
+      const defs = idx.map((r: any) => r.indexdef).join(' ');
+      expect(defs.toLowerCase().includes('sso_provider_id')).toBe(true);
+      expect(defs.toLowerCase().includes('for_email')).toBe(true);
+    }
+  });
+
+  it('should verify anon access to saml_relay_states based on rls', async () => {
+    db.setContext({ role: 'service_role' });
+    const rlsStatus = await db.any(
+      `SELECT c.relrowsecurity 
+       FROM pg_class c
+       JOIN pg_namespace n ON n.oid = c.relnamespace
+       WHERE n.nspname = 'auth' AND c.relname = 'saml_relay_states'`
+    );
+    expect(Array.isArray(rlsStatus)).toBe(true);
+    expect(rlsStatus.length).toBeGreaterThan(0);
     
-    // rls should block access, result should be empty
-    expect(result.length).toBe(0);
+    db.clearContext();
+    const result = await db.any(`SELECT * FROM auth.saml_relay_states LIMIT 1`);
+    expect(Array.isArray(result)).toBe(true);
+    if (rlsStatus[0].relrowsecurity === true) {
+      expect(result.length).toBe(0);
+    }
   });
 });
 

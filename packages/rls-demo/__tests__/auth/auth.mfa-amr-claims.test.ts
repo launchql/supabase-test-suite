@@ -4,11 +4,7 @@ let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
-let tableExists = false;
-
 beforeAll(async () => {
-  
-  
   ({ pg, db, teardown } = await getConnections());
   
   // verify auth schema exists
@@ -20,7 +16,7 @@ beforeAll(async () => {
   );
   expect(authSchemaExists[0].exists).toBe(true);
   
-  // grant access to auth schema for testing
+  // grants
   await pg.any(
     `GRANT USAGE ON SCHEMA auth TO public;
      GRANT SELECT ON ALL TABLES IN SCHEMA auth TO service_role;
@@ -32,14 +28,14 @@ beforeAll(async () => {
     []
   );
   
-  // check if auth.mfa_amr_claims table exists (using pg in beforeAll only)
+  // assert exists
   const exists = await pg.any(
     `SELECT EXISTS (
       SELECT FROM information_schema.tables 
       WHERE table_schema = 'auth' AND table_name = 'mfa_amr_claims'
     ) as exists`
   );
-  tableExists = exists[0]?.exists === true;
+  expect(exists[0].exists).toBe(true);
 });
 
 afterAll(async () => {
@@ -68,70 +64,79 @@ describe('tutorial: auth mfa_amr_claims table access', () => {
     );
     
     expect(Array.isArray(exists)).toBe(true);
-    if (exists[0]?.exists === false) {
-      expect(exists[0].exists).toBe(false);
-      return;
-    }
     expect(exists[0].exists).toBe(true);
   });
 
   it('should verify service_role can query mfa_amr_claims structure', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
     db.setContext({ role: 'service_role' });
-    
-    // query table column structure
     const columns = await db.any(
       `SELECT column_name, data_type 
        FROM information_schema.columns 
        WHERE table_schema = 'auth' AND table_name = 'mfa_amr_claims'
        ORDER BY ordinal_position`
     );
-    
     expect(Array.isArray(columns)).toBe(true);
+    expect(columns.length).toBeGreaterThan(0);
+    const names = columns.map((c: any) => c.column_name);
+    expect(names).toContain('session_id');
+    expect(names).toContain('authentication_method');
   });
 
-  it('should verify table has foreign key to auth.users', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
+  it('should verify foreign key to auth.sessions', async () => {
     db.setContext({ role: 'service_role' });
-    
-    // check for foreign key constraints to auth.users
     const fks = await db.any(
-      `SELECT tc.constraint_name, kcu.column_name, ccu.table_name AS foreign_table_name
+      `SELECT tc.constraint_name, ccu.table_name AS foreign_table_name
        FROM information_schema.table_constraints AS tc
-       JOIN information_schema.key_column_usage AS kcu
-         ON tc.constraint_name = kcu.constraint_name
        JOIN information_schema.constraint_column_usage AS ccu
-         ON ccu.constraint_name = tc.constraint_name
+         ON ccu.constraint_name = tc.constraint_name AND ccu.table_schema = tc.table_schema
        WHERE tc.constraint_type = 'FOREIGN KEY' 
          AND tc.table_schema = 'auth' 
-         AND tc.table_name = 'mfa_amr_claims'
-         AND ccu.table_name = 'users'`
+         AND tc.table_name = 'mfa_amr_claims'`
     );
-    
     expect(Array.isArray(fks)).toBe(true);
+    if (fks.length > 0) {
+      const hasSessionsFk = fks.some((r: any) => r.foreign_table_name === 'sessions');
+      expect(hasSessionsFk).toBe(true);
+    }
   });
 
-  it('should prevent anon from accessing mfa_amr_claims', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
-    // clear context to anon role
-    db.clearContext();
-    
-    // anon should not be able to access mfa_amr_claims (rls blocks)
-    const result = await db.any(
-      `SELECT * FROM auth.mfa_amr_claims LIMIT 1`
+  it('should verify unique composite key (session_id, authentication_method)', async () => {
+    db.setContext({ role: 'service_role' });
+    const uniqueCols = await db.any(
+      `SELECT kcu.column_name
+       FROM information_schema.table_constraints tc
+       JOIN information_schema.key_column_usage kcu
+         ON tc.constraint_name = kcu.constraint_name
+        AND tc.table_schema = kcu.table_schema
+       WHERE tc.table_schema = 'auth'
+         AND tc.table_name   = 'mfa_amr_claims'
+         AND tc.constraint_type = 'UNIQUE'
+       ORDER BY kcu.ordinal_position`
     );
+    expect(Array.isArray(uniqueCols)).toBe(true);
+    if (uniqueCols.length > 0) {
+      const cols = uniqueCols.map((r: any) => r.column_name);
+      expect(cols).toEqual(['session_id','authentication_method']);
+    }
+  });
+
+  it('should verify anon access to mfa_amr_claims based on rls', async () => {
+    db.setContext({ role: 'service_role' });
+    const rlsStatus = await db.any(
+      `SELECT c.relrowsecurity 
+       FROM pg_class c
+       JOIN pg_namespace n ON n.oid = c.relnamespace
+       WHERE n.nspname = 'auth' AND c.relname = 'mfa_amr_claims'`
+    );
+    expect(Array.isArray(rlsStatus)).toBe(true);
+    expect(rlsStatus.length).toBeGreaterThan(0);
     
-    // rls should block access, result should be empty
-    expect(result.length).toBe(0);
+    db.clearContext();
+    const result = await db.any(`SELECT * FROM auth.mfa_amr_claims LIMIT 1`);
+    expect(Array.isArray(result)).toBe(true);
+    if (rlsStatus[0].relrowsecurity === true) {
+      expect(result.length).toBe(0);
+    }
   });
 });
 

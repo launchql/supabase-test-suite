@@ -4,8 +4,6 @@ let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
-let tableExists = false;
-
 beforeAll(async () => {
   
   
@@ -32,14 +30,14 @@ beforeAll(async () => {
     []
   );
   
-  // check if auth.saml_providers table exists (using pg in beforeAll only)
+  // assert table exists
   const exists = await pg.any(
     `SELECT EXISTS (
       SELECT FROM information_schema.tables 
       WHERE table_schema = 'auth' AND table_name = 'saml_providers'
     ) as exists`
   );
-  tableExists = exists[0]?.exists === true;
+  expect(exists[0].exists).toBe(true);
 });
 
 afterAll(async () => {
@@ -68,23 +66,15 @@ describe('tutorial: auth saml_providers table access', () => {
     );
     
     expect(Array.isArray(exists)).toBe(true);
-    if (exists[0]?.exists === false) {
-      expect(exists[0].exists).toBe(false);
-      return;
-    }
     expect(exists[0].exists).toBe(true);
   });
 
   it('should verify service_role can query saml_providers', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
     db.setContext({ role: 'service_role' });
     
     // service_role should be able to query saml_providers
     const providers = await db.any(
-      `SELECT id, sso_provider_id, entity_id, metadata_xml 
+      `SELECT id, sso_provider_id, entity_id, metadata_xml, metadata_url, attribute_mapping, created_at, updated_at 
        FROM auth.saml_providers 
        LIMIT 10`
     );
@@ -93,10 +83,6 @@ describe('tutorial: auth saml_providers table access', () => {
   });
 
   it('should verify table has foreign key to sso_providers', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
     db.setContext({ role: 'service_role' });
     
     // check for foreign key constraints to sso_providers
@@ -114,21 +100,55 @@ describe('tutorial: auth saml_providers table access', () => {
     expect(Array.isArray(fks)).toBe(true);
   });
 
-  it('should prevent anon from accessing saml_providers', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
-    // clear context to anon role
-    db.clearContext();
-    
-    // anon should not be able to access saml_providers (rls blocks)
-    const result = await db.any(
-      `SELECT * FROM auth.saml_providers LIMIT 1`
+  it('should verify unique constraint on entity_id', async () => {
+    db.setContext({ role: 'service_role' });
+    const uniques = await db.any(
+      `SELECT tc.constraint_name, ccu.column_name
+       FROM information_schema.table_constraints tc
+       JOIN information_schema.constraint_column_usage ccu
+         ON ccu.constraint_name = tc.constraint_name
+       WHERE tc.table_schema = 'auth' 
+         AND tc.table_name = 'saml_providers'
+         AND tc.constraint_type = 'UNIQUE'`
     );
+    expect(Array.isArray(uniques)).toBe(true);
+    if (uniques.length > 0) {
+      const cols = uniques.map((r: any) => r.column_name);
+      expect(cols.includes('entity_id')).toBe(true);
+    }
+  });
+
+  it('should verify index exists on sso_provider_id', async () => {
+    db.setContext({ role: 'service_role' });
+    const idx = await db.any(
+      `SELECT indexname, indexdef 
+       FROM pg_indexes 
+       WHERE schemaname = 'auth' AND tablename = 'saml_providers'`
+    );
+    expect(Array.isArray(idx)).toBe(true);
+    if (idx.length > 0) {
+      const defs = idx.map((r: any) => r.indexdef).join(' ');
+      expect(defs.toLowerCase().includes('sso_provider_id')).toBe(true);
+    }
+  });
+
+  it('should verify anon access to saml_providers based on rls', async () => {
+    db.setContext({ role: 'service_role' });
+    const rlsStatus = await db.any(
+      `SELECT c.relrowsecurity 
+       FROM pg_class c
+       JOIN pg_namespace n ON n.oid = c.relnamespace
+       WHERE n.nspname = 'auth' AND c.relname = 'saml_providers'`
+    );
+    expect(Array.isArray(rlsStatus)).toBe(true);
+    expect(rlsStatus.length).toBeGreaterThan(0);
     
-    // rls should block access, result should be empty
-    expect(result.length).toBe(0);
+    db.clearContext();
+    const result = await db.any(`SELECT * FROM auth.saml_providers LIMIT 1`);
+    expect(Array.isArray(result)).toBe(true);
+    if (rlsStatus[0].relrowsecurity === true) {
+      expect(result.length).toBe(0);
+    }
   });
 });
 

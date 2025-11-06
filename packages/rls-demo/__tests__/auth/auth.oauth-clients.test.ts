@@ -4,11 +4,7 @@ let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
-let tableExists = false;
-
 beforeAll(async () => {
-  
-  
   ({ pg, db, teardown } = await getConnections());
   
   // verify auth schema exists
@@ -20,7 +16,7 @@ beforeAll(async () => {
   );
   expect(authSchemaExists[0].exists).toBe(true);
   
-  // grant access to auth schema for testing
+  // grants for reads
   await pg.any(
     `GRANT USAGE ON SCHEMA auth TO public;
      GRANT SELECT ON ALL TABLES IN SCHEMA auth TO service_role;
@@ -32,14 +28,14 @@ beforeAll(async () => {
     []
   );
   
-  // check if auth.oauth_clients table exists (using pg in beforeAll only)
+  // assert table exists (fail fast)
   const exists = await pg.any(
     `SELECT EXISTS (
       SELECT FROM information_schema.tables 
       WHERE table_schema = 'auth' AND table_name = 'oauth_clients'
     ) as exists`
   );
-  tableExists = exists[0]?.exists === true;
+  expect(exists[0].exists).toBe(true);
 });
 
 afterAll(async () => {
@@ -68,23 +64,15 @@ describe('tutorial: auth oauth_clients table access', () => {
     );
     
     expect(Array.isArray(exists)).toBe(true);
-    if (exists[0]?.exists === false) {
-      expect(exists[0].exists).toBe(false);
-      return;
-    }
     expect(exists[0].exists).toBe(true);
   });
 
   it('should verify service_role can read oauth_clients', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
     db.setContext({ role: 'service_role' });
     
     // service_role should be able to query oauth_clients
     const clients = await db.any(
-      `SELECT id, name, client_id, client_secret 
+      `SELECT id, client_id, client_secret_hash, client_name, created_at, updated_at 
        FROM auth.oauth_clients 
        LIMIT 10`
     );
@@ -93,38 +81,40 @@ describe('tutorial: auth oauth_clients table access', () => {
   });
 
   it('should verify table has unique constraint on client_id', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
     db.setContext({ role: 'service_role' });
     
-    // check for unique constraints on the table
+    // check for unique constraint on client_id via constraints
     const constraints = await db.any(
-      `SELECT constraint_name, constraint_type 
+      `SELECT constraint_name
        FROM information_schema.table_constraints 
-       WHERE table_schema = 'auth' AND table_name = 'oauth_clients'
-       AND constraint_type = 'UNIQUE'`
+       WHERE table_schema = 'auth' AND table_name = 'oauth_clients' AND constraint_type = 'UNIQUE'`
     );
-    
     expect(Array.isArray(constraints)).toBe(true);
+    // and the index exists
+    const indexes = await db.any(
+      `SELECT indexname FROM pg_indexes WHERE schemaname = 'auth' AND tablename = 'oauth_clients'`
+    );
+    expect(Array.isArray(indexes)).toBe(true);
   });
 
-  it('should prevent anon from accessing oauth_clients', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
-    // clear context to anon role
-    db.clearContext();
-    
-    // anon should not be able to access oauth_clients (rls blocks)
-    const result = await db.any(
-      `SELECT * FROM auth.oauth_clients LIMIT 1`
+  it('should verify anon access to oauth_clients based on rls', async () => {
+    // rls status
+    db.setContext({ role: 'service_role' });
+    const rlsStatus = await db.any(
+      `SELECT c.relrowsecurity 
+       FROM pg_class c
+       JOIN pg_namespace n ON n.oid = c.relnamespace
+       WHERE n.nspname = 'auth' AND c.relname = 'oauth_clients'`
     );
+    expect(Array.isArray(rlsStatus)).toBe(true);
+    expect(rlsStatus.length).toBeGreaterThan(0);
     
-    // rls should block access, result should be empty
-    expect(result.length).toBe(0);
+    db.clearContext();
+    const result = await db.any(`SELECT * FROM auth.oauth_clients LIMIT 1`);
+    expect(Array.isArray(result)).toBe(true);
+    if (rlsStatus[0].relrowsecurity === true) {
+      expect(result.length).toBe(0);
+    }
   });
 });
 

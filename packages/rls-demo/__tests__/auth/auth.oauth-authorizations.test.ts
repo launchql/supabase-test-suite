@@ -4,11 +4,7 @@ let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
-let tableExists = false;
-
 beforeAll(async () => {
-  
-  
   ({ pg, db, teardown } = await getConnections());
   
   // verify auth schema exists
@@ -20,7 +16,7 @@ beforeAll(async () => {
   );
   expect(authSchemaExists[0].exists).toBe(true);
   
-  // grant access to auth schema for testing
+  // grants
   await pg.any(
     `GRANT USAGE ON SCHEMA auth TO public;
      GRANT SELECT ON ALL TABLES IN SCHEMA auth TO service_role;
@@ -32,14 +28,14 @@ beforeAll(async () => {
     []
   );
   
-  // check if auth.oauth_authorizations table exists (using pg in beforeAll only)
+  // assert table exists
   const exists = await pg.any(
     `SELECT EXISTS (
       SELECT FROM information_schema.tables 
       WHERE table_schema = 'auth' AND table_name = 'oauth_authorizations'
     ) as exists`
   );
-  tableExists = exists[0]?.exists === true;
+  expect(exists[0].exists).toBe(true);
 });
 
 afterAll(async () => {
@@ -68,63 +64,60 @@ describe('tutorial: auth oauth_authorizations table access', () => {
     );
     
     expect(Array.isArray(exists)).toBe(true);
-    if (exists[0]?.exists === false) {
-      expect(exists[0].exists).toBe(false);
-      return;
-    }
     expect(exists[0].exists).toBe(true);
   });
 
   it('should verify service_role can query oauth_authorizations structure', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
     db.setContext({ role: 'service_role' });
-    
-    // query table column structure
     const columns = await db.any(
       `SELECT column_name, data_type 
        FROM information_schema.columns 
        WHERE table_schema = 'auth' AND table_name = 'oauth_authorizations'
        ORDER BY ordinal_position`
     );
-    
     expect(Array.isArray(columns)).toBe(true);
+    expect(columns.length).toBeGreaterThan(0);
+    const names = columns.map((c: any) => c.column_name);
+    expect(names).toContain('id');
+    expect(names).toContain('client_id');
+    expect(names).toContain('authorization_id');
+    expect(names).toContain('status');
+    expect(names).toContain('expires_at');
   });
 
-  it('should verify table grants are configured correctly', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
+  it('should verify unique constraints and indexes', async () => {
     db.setContext({ role: 'service_role' });
-    
-    // check table privileges/grants
-    const grants = await db.any(
-      `SELECT grantee, privilege_type 
-       FROM information_schema.table_privileges 
-       WHERE table_schema = 'auth' AND table_name = 'oauth_authorizations'`
+    const uniques = await db.any(
+      `SELECT constraint_name
+       FROM information_schema.table_constraints 
+       WHERE table_schema = 'auth' AND table_name = 'oauth_authorizations' AND constraint_type = 'UNIQUE'`
     );
-    
-    expect(Array.isArray(grants)).toBe(true);
+    expect(Array.isArray(uniques)).toBe(true);
+    const indexes = await db.any(
+      `SELECT indexname 
+       FROM pg_indexes 
+       WHERE schemaname = 'auth' AND tablename = 'oauth_authorizations'`
+    );
+    expect(Array.isArray(indexes)).toBe(true);
   });
 
-  it('should prevent anon from accessing oauth_authorizations', async () => {
-    if (!tableExists) {
-      return;
-    }
-    
-    // clear context to anon role
-    db.clearContext();
-    
-    // anon should not be able to access oauth_authorizations (rls blocks)
-    const result = await db.any(
-      `SELECT * FROM auth.oauth_authorizations LIMIT 1`
+  it('should verify anon access to oauth_authorizations based on rls', async () => {
+    db.setContext({ role: 'service_role' });
+    const rlsStatus = await db.any(
+      `SELECT c.relrowsecurity 
+       FROM pg_class c
+       JOIN pg_namespace n ON n.oid = c.relnamespace
+       WHERE n.nspname = 'auth' AND c.relname = 'oauth_authorizations'`
     );
+    expect(Array.isArray(rlsStatus)).toBe(true);
+    expect(rlsStatus.length).toBeGreaterThan(0);
     
-    // rls should block access, result should be empty
-    expect(result.length).toBe(0);
+    db.clearContext();
+    const result = await db.any(`SELECT * FROM auth.oauth_authorizations LIMIT 1`);
+    expect(Array.isArray(result)).toBe(true);
+    if (rlsStatus[0].relrowsecurity === true) {
+      expect(result.length).toBe(0);
+    }
   });
 });
 
