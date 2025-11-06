@@ -5,13 +5,6 @@ let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  // set database connection to postgres (supabase_functions schema is in postgres db)
-  process.env.PGHOST = '127.0.0.1';
-  process.env.PGPORT = '54322';
-  process.env.PGUSER = 'supabase_admin';
-  process.env.PGPASSWORD = 'postgres';
-  process.env.PGDATABASE = 'postgres';
-  
   ({ pg, db, teardown } = await getConnections());
   
   // grant access to supabase_functions schema for testing

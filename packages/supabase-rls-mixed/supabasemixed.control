@@ -1,0 +1,7 @@
+# supabasemixed extension
+comment = 'supabasemixed extension'
+default_version = '0.0.1'
+module_pathname = '$libdir/supabasemixed'
+requires = 'plpgsql,supabase,launchql-rls-demo'
+relocatable = false
+superuser = false

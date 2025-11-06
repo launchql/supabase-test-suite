@@ -72,14 +72,15 @@ importers:
         specifier: ^5.1.6
         version: 5.9.2
 
-  packages/auth:
-    publishDirectory: dist
-
   packages/rls-demo:
     devDependencies:
       '@launchql/cli':
         specifier: ^4.9.0
         version: 4.9.0(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))
+
+  packages/supabase: {}
+
+  packages/supabase-rls-mixed: {}
 
 packages:
 

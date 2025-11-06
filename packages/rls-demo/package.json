@@ -1,6 +1,7 @@
 {
   "name": "@lql-pg/rls-demo",
   "version": "0.0.1",
+  "author": "Interweb <developers@interweb.co>",
   "description": "RLS (Row Level Security) demo extension with users and products tables",
   "publishConfig": {
     "access": "public"

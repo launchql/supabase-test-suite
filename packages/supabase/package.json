@@ -1,0 +1,16 @@
+{
+  "name": "@launchql/supabase",
+  "version": "0.0.1",
+  "author": "Interweb <developers@interweb.co>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rimraf dist/**",
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "keywords": []
+}
