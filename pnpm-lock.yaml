@@ -82,6 +82,9 @@ importers:
 
   packages/supabase-rls-mixed: {}
 
+  packages/supabase-test:
+    publishDirectory: dist
+
 packages:
 
   '@ampproject/remapping@2.3.0':
