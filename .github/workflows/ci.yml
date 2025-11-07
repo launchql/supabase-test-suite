@@ -12,7 +12,7 @@ jobs:
 
     env:
       PGHOST: pg_db
-      PGPORT: 54322
+      PGPORT: 5432
       PGUSER: supabase_admin
       PGPASSWORD: postgres
 
@@ -28,7 +28,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 54322:54322
+          - 5432:5432
 
     steps:
       - name: Configure Git (for tests)
