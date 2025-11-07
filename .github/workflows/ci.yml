@@ -8,7 +8,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: pyramation/node-sqitch:20.12.0
     continue-on-error: true
     strategy:
       fail-fast: false
@@ -18,24 +17,11 @@ jobs:
           - rls-demo
 
     env:
-      PGHOST: pg_db
-      PGPORT: 5432
-      PGUSER: supabase_admin
+      PGHOST: 127.0.0.1
+      PGPORT: 54322
+      PGUSER: postgres
       PGPASSWORD: postgres
-
-    services:
-      pg_db:
-        image: public.ecr.aws/supabase/postgres:17.6.1.029
-        env:
-          POSTGRES_USER: supabase_admin
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+      DATABASE_URL: "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
 
     steps:
       - name: Configure Git (for tests)
@@ -45,6 +31,38 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Initialize Supabase (if needed)
+        run: test -d supabase || supabase init
+
+      - name: Start Supabase stack
+        run: supabase start
+
+      - name: Show Supabase status
+        run: supabase status
+
+      - name: Install Postgres client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Wait for Postgres
+        run: |
+          for i in {1..60}; do
+            if pg_isready -h 127.0.0.1 -p 54322 -U postgres; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "postgres not ready in time"
+          docker ps
+          supabase status
+          exit 1
 
       - name: Enable corepack and pnpm
         run: |
@@ -67,9 +85,9 @@ jobs:
       #     lql admin-users bootstrap --yes
       #     lql admin-users add --test --yes
       #   env:
-      #     PGHOST: pg_db
-      #     PGPORT: 5432
-      #     PGUSER: supabase_admin
+      #     PGHOST: 127.0.0.1
+      #     PGPORT: 54322
+      #     PGUSER: postgres
       #     PGPASSWORD: postgres
 
       - name: Test ${{ matrix.package }}
