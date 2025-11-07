@@ -1,14 +1,27 @@
-import { getConnections, PgTestClient } from 'pgsql-test';
+import { getConnections, PgTestClient } from 'supabase-test';
 
 let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
+// REMOVE THIS BEFORE MERGING
+
 beforeAll(async () => {
-  // use existing supabase database connection
-  
-  
-  ({ pg, db, teardown } = await getConnections());
+  // process.env.PGHOST = 'localhost';
+  // process.env.PGPORT = '54322';
+  // process.env.PGUSER = 'supabase_admin';
+  // process.env.PGPASSWORD = 'postgres';
+
+  ({ pg, db, teardown } = await getConnections({
+
+    pg: {
+      host: 'localhost',
+      port: 54322,
+      user: 'supabase_admin',
+      password: 'postgres',
+    }
+
+  }));
 });
 
 afterAll(async () => {

@@ -1,4 +1,4 @@
-import { getConnections, PgTestClient, seed } from 'pgsql-test';
+import { getConnections, PgTestClient, seed } from 'supabase-test';
 import path from 'path';
 
 let pg: PgTestClient;
