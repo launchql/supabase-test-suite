@@ -1,3 +1,5 @@
+DO $$
+BEGIN
     IF NOT EXISTS (
       SELECT 1
       FROM pg_roles
@@ -6,6 +8,7 @@
     THEN
       CREATE USER supabase_functions_admin NOINHERIT CREATEROLE LOGIN NOREPLICATION;
     END IF;
+END $$;
 
 
 
