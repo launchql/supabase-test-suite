@@ -2,6 +2,6 @@
 comment = 'supabase extension'
 default_version = '0.0.1'
 module_pathname = '$libdir/supabase'
-requires = 'plpgsql,pg_net'
+requires = 'plpgsql'
 relocatable = false
 superuser = false
