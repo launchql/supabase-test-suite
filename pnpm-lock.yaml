@@ -51,8 +51,8 @@ importers:
         specifier: ^8.2.3
         version: 8.2.3(@types/node@22.17.1)(encoding@0.1.13)
       pgsql-test:
-        specifier: ^2.11.4
-        version: 2.11.4(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphql@15.10.1)
+        specifier: ^2.11.5
+        version: 2.11.5(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphql@15.10.1)
       prettier:
         specifier: ^3.0.2
         version: 3.6.2
@@ -620,8 +620,8 @@ packages:
     peerDependencies:
       '@pgsql/types': ^17.6.1
 
-  '@launchql/core@2.11.4':
-    resolution: {integrity: sha512-JdviaPr7JPdRK1YagTMyJx78D3JzCnoUdMGpNIswY4vKFmidA67NDdvAAVWm6k2JDhJNfRtCjd45acE/eAxeCA==}
+  '@launchql/core@2.11.5':
+    resolution: {integrity: sha512-EgHVHRGo7NwXo9o5UJ6XbDr0OFIaCQ08E8P5213d2bp6gThcxIfYJrDAc2xgq9RB/yw76Jvygs/xCdso6ujLlA==}
     peerDependencies:
       '@pgsql/types': ^17.6.1
 
@@ -3751,8 +3751,8 @@ packages:
   pgsql-parser@17.8.2:
     resolution: {integrity: sha512-/uHZL7mq3Bj23v/nDShb8gN8LwUKdejFii6IFBxRYRXxWlRrbsdky1KtevIxiVGasWZfI+E5t1//Wq+D3cVmAg==}
 
-  pgsql-test@2.11.4:
-    resolution: {integrity: sha512-hU7T4bY8j0PpS71G8dWdh66cqaOl1F76eJ7BG2YaUoo0sYSv0wjOI/0mWreOU9I5YYAeY6j06FGeR/dmRZWVPA==}
+  pgsql-test@2.11.5:
+    resolution: {integrity: sha512-l5WqgN48bKpZ7nlDnSXtGHg38VKzAwS/nqZyFQSavkHipc8gBrkZjnI2fAsuprwsakYwvUGzO/y6GRsgB3Yk4w==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -5760,7 +5760,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@launchql/core@2.11.4(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphql@15.10.1)':
+  '@launchql/core@2.11.5(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphql@15.10.1)':
     dependencies:
       '@launchql/env': 2.4.1(graphql@15.10.1)
       '@launchql/server-utils': 2.4.1(graphql@15.10.1)
@@ -9974,9 +9974,9 @@ snapshots:
       libpg-query: 17.6.0
       pgsql-deparser: 17.11.1
 
-  pgsql-test@2.11.4(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphql@15.10.1):
+  pgsql-test@2.11.5(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphql@15.10.1):
     dependencies:
-      '@launchql/core': 2.11.4(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphql@15.10.1)
+      '@launchql/core': 2.11.5(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphql@15.10.1)
       '@launchql/env': 2.4.1(graphql@15.10.1)
       '@launchql/server-utils': 2.4.1(graphql@15.10.1)
       '@launchql/types': 2.6.0(graphql@15.10.1)
