@@ -12,6 +12,6 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "@launchql/cli": "^4.12.13"
+    "@launchql/cli": "^4.12.3"
   }
 }

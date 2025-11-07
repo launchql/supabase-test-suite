@@ -75,7 +75,7 @@ jobs:
         run: pnpm install
 
       - name: Install LaunchQL CLI globally
-        run: npm install -g @launchql/cli@4.12.1
+        run: npm install -g @launchql/cli@4.12.3
 
       - name: Build
         run: pnpm -r build
