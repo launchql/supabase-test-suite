@@ -62,15 +62,15 @@ jobs:
       - name: Build
         run: pnpm -r build
 
-      - name: seed app_user
-        run: |
-          lql admin-users bootstrap --yes
-          lql admin-users add --test --yes
-        env:
-          PGHOST: pg_db
-          PGPORT: 5432
-          PGUSER: supabase_admin
-          PGPASSWORD: postgres
+      # - name: seed app_user
+      #   run: |
+      #     lql admin-users bootstrap --yes
+      #     lql admin-users add --test --yes
+      #   env:
+      #     PGHOST: pg_db
+      #     PGPORT: 5432
+      #     PGUSER: supabase_admin
+      #     PGPASSWORD: postgres
 
       - name: Test ${{ matrix.package }}
         run: cd ./packages/${{ matrix.package }} && pnpm test
