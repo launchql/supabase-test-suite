@@ -25,7 +25,7 @@ jobs:
 
     services:
       pg_db:
-        image: supabase/postgres:17.6.1.013
+        image: supabase/postgres:17.6.1.029
         env:
           POSTGRES_USER: supabase_admin
           POSTGRES_PASSWORD: postgres
