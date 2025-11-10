@@ -14,12 +14,16 @@
 
 A friendly playground for building and validating Supabase Row‑Level Security (RLS) using LaunchQL. It includes real‑world examples, migrations, and a comprehensive test suite you can run locally.
 
+Built with [supabase-test](https://www.npmjs.com/package/supabase-test) — a Supabase‑optimized version of `pgsql-test` for instant, isolated Postgres test databases with automatic rollbacks and Supabase defaults. See the package for install and features.
+
 ## Features
 
-- Policy‑driven examples for users, products, storage, realtime, and functions
-- Supabase CLI local stack for zero‑setup Postgres
-- Jest‑based tests that exercise RLS behavior end‑to‑end
-- Modular schema packages you can reuse and extend
+- 🔐 RLS policy‑driven example tests with example product database using Supabase users
+- 🧪 Comprehensive end‑to‑end test suite against native Supabase schemas/tables (auth, storage, functions, realtime, and more)
+- 🐘 Supabase CLI local stack for zero‑setup Postgres
+- 🧪 Jest‑based tests that exercise RLS behavior end‑to‑end
+- 🚀 GitHub Actions workflows to run integration/e2e tests in CI/CD
+- 🧩 Modular schema packages you can reuse and extend
 
 ## Quick start (tl;dr)
 
@@ -56,7 +60,21 @@ for the expanded guide with screenshots and copy‑paste commands, see `docs/img
 ## scripts you’ll use often
 
 ```bash
-# run the whole workspace test suite
+# rls-demo: run tests in watch mode
+cd packages/rls-demo
+pnpm test:watch
+
+# edit tests in packages/rls-demo/__tests__/... and Jest will re-run
+```
+
+```bash
+# supabase: run tests in watch mode
+cd packages/supabase
+pnpm test:watch
+```
+
+```bash
+# run all packages’ tests from the repo root
 pnpm test
 ```
 
