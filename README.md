@@ -54,6 +54,8 @@ for the expanded guide with screenshots and copy‑paste commands, see `docs/img
 
 ## repository layout
 
+The repository is a launchql workspace, which is a hybrid `pnpm`/`lql` workspace, which allows for modular postgres packages, that can be easily tested via `pgsql-test`, or in the case of this repository, `supabase-test`. Here are the packages of interest:
+
 - `packages/supabase`: supabase‑focused sql, tests, and helpers
 - `packages/rls-demo`: demo extension showcasing rls with users/products
 
