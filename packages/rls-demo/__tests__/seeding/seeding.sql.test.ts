@@ -1,7 +1,6 @@
 import { getConnections, PgTestClient, seed } from 'supabase-test';
 import path from 'path';
 
-let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
@@ -10,7 +9,7 @@ const sql = (f: string) => path.join(__dirname, 'data', f);
 const cwd = path.resolve(__dirname, '../../');
 
 beforeAll(async () => {
-  ({ pg, db, teardown } = await getConnections(
+  ({ db, teardown } = await getConnections(
     {}, [
       seed.launchql(cwd),
       seed.sqlfile([
@@ -37,7 +36,7 @@ describe('tutorial: testing with sql file seeding', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['sql-seed1@example.com', 'SQL Seed User 1']
@@ -56,7 +55,7 @@ describe('tutorial: testing with sql file seeding', () => {
     );
 
     const verifiedUsers = await db.any(
-      `SELECT id FROM rls_test.users WHERE id = $1`,
+      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
     expect(verifiedUsers.length).toBe(1);
@@ -70,7 +69,7 @@ describe('tutorial: testing with sql file seeding', () => {
     db.clearContext();
     
     const anonUsers = await db.any(
-      `SELECT id FROM rls_test.users WHERE id = $1`,
+      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
     expect(anonUsers.length).toBe(0);

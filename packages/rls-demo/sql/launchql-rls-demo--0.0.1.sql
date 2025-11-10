@@ -23,7 +23,7 @@ GRANT EXECUTE ON FUNCTION auth.role() TO PUBLIC;
 
 CREATE SCHEMA IF NOT EXISTS rls_test;
 
-CREATE TABLE IF NOT EXISTS rls_test.users (
+CREATE TABLE IF NOT EXISTS rls_test.user_profiles (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email text UNIQUE NOT NULL,
   name text NOT NULL,
@@ -36,20 +36,20 @@ CREATE TABLE IF NOT EXISTS rls_test.products (
   name text NOT NULL,
   description text,
   price numeric(10, 2) NOT NULL,
-  owner_id uuid NOT NULL REFERENCES rls_test.users (id)
+  owner_id uuid NOT NULL REFERENCES rls_test.user_profiles (id)
     ON DELETE CASCADE,
   created_at timestamp with time zone DEFAULT now(),
   updated_at timestamp with time zone DEFAULT now()
 );
 
-ALTER TABLE rls_test.users 
+ALTER TABLE rls_test.user_profiles 
   ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE rls_test.products 
   ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Users can view own data"
-  ON rls_test.users
+  ON rls_test.user_profiles
   AS PERMISSIVE
   FOR SELECT
   TO PUBLIC
@@ -58,7 +58,7 @@ CREATE POLICY "Users can view own data"
   );
 
 CREATE POLICY "Users can update own data"
-  ON rls_test.users
+  ON rls_test.user_profiles
   AS PERMISSIVE
   FOR UPDATE
   TO PUBLIC
@@ -67,7 +67,7 @@ CREATE POLICY "Users can update own data"
   );
 
 CREATE POLICY "Users can insert own data"
-  ON rls_test.users
+  ON rls_test.user_profiles
   AS PERMISSIVE
   FOR INSERT
   TO PUBLIC
@@ -76,7 +76,7 @@ CREATE POLICY "Users can insert own data"
   );
 
 CREATE POLICY "Users can delete own data"
-  ON rls_test.users
+  ON rls_test.user_profiles
   AS PERMISSIVE
   FOR DELETE
   TO PUBLIC
@@ -122,23 +122,23 @@ CREATE POLICY "Users can delete own products"
 
 GRANT USAGE ON SCHEMA rls_test TO anon;
 
-GRANT ALL ON rls_test.users TO anon;
+GRANT ALL ON rls_test.user_profiles TO anon;
 
 GRANT USAGE ON SCHEMA rls_test TO authenticated;
 
-GRANT ALL ON rls_test.users TO authenticated;
+GRANT ALL ON rls_test.user_profiles TO authenticated;
 
 GRANT ALL ON rls_test.products TO authenticated;
 
 GRANT USAGE ON SCHEMA rls_test TO service_role;
 
-GRANT ALL ON rls_test.users TO service_role;
+GRANT ALL ON rls_test.user_profiles TO service_role;
 
 GRANT ALL ON rls_test.products TO service_role;
 
 CREATE INDEX IF NOT EXISTS idx_products_owner_id ON rls_test.products (owner_id);
 
-CREATE INDEX IF NOT EXISTS idx_users_email ON rls_test.users (email);
+CREATE INDEX IF NOT EXISTS idx_users_email ON rls_test.user_profiles (email);
 
 CREATE OR REPLACE FUNCTION rls_test.update_updated_at_column() RETURNS trigger AS $EOFCODE$
 BEGIN
@@ -149,7 +149,7 @@ $EOFCODE$ LANGUAGE plpgsql;
 
 CREATE TRIGGER update_users_updated_at
   BEFORE UPDATE
-  ON rls_test.users
+  ON rls_test.user_profiles
   FOR EACH ROW
   EXECUTE PROCEDURE rls_test.update_updated_at_column();
 

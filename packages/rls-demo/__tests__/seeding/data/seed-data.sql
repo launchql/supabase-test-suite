@@ -2,7 +2,7 @@
 -- This file can be used to populate the database with test data
 
 -- Insert test users
-INSERT INTO rls_test.users (id, email, name) VALUES 
+INSERT INTO rls_test.user_profiles (id, email, name) VALUES 
   ('550e8400-e29b-41d4-a716-446655440001', 'alice@example.com', 'Alice Johnson'),
   ('550e8400-e29b-41d4-a716-446655440002', 'bob@example.com', 'Bob Smith'),
   ('550e8400-e29b-41d4-a716-446655440003', 'charlie@example.com', 'Charlie Brown'),
@@ -25,7 +25,7 @@ SELECT
   u.email,
   COUNT(p.id) as product_count,
   COALESCE(SUM(p.price), 0) as total_value
-FROM rls_test.users u
+FROM rls_test.user_profiles u
 LEFT JOIN rls_test.products p ON u.id = p.owner_id
 GROUP BY u.id, u.name, u.email
 ORDER BY u.name;

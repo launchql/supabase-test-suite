@@ -1,11 +1,10 @@
 import { getConnections, PgTestClient } from 'supabase-test';
 
-let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  ({ pg, db, teardown } = await getConnections());
+  ({ db, teardown } = await getConnections());
 });
 
 afterAll(async () => {
@@ -26,7 +25,7 @@ describe('tutorial: advanced query patterns with rls', () => {
 
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['pagination1@example.com', 'Pagination User 1']
@@ -78,7 +77,7 @@ describe('tutorial: advanced query patterns with rls', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['search1@example.com', 'Search User 1']
@@ -117,7 +116,7 @@ describe('tutorial: advanced query patterns with rls', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['window1@example.com', 'Window User 1']
@@ -164,7 +163,7 @@ describe('tutorial: advanced query patterns with rls', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['batch1@example.com', 'Batch User 1']
@@ -204,14 +203,14 @@ describe('tutorial: advanced query patterns with rls', () => {
     db.setContext({ role: 'service_role' });
 
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['cte1@example.com', 'CTE User 1']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['cte2@example.com', 'CTE User 2']
@@ -259,7 +258,7 @@ describe('tutorial: advanced query patterns with rls', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['date1@example.com', 'Date User 1']
@@ -298,7 +297,7 @@ describe('tutorial: advanced query patterns with rls', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['order1@example.com', 'Order User 1']
@@ -341,7 +340,7 @@ describe('tutorial: advanced query patterns with rls', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['group1@example.com', 'Group User 1']
@@ -398,7 +397,7 @@ describe('tutorial: advanced query patterns with rls', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['having1@example.com', 'Having User 1']

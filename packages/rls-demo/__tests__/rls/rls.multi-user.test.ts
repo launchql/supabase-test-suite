@@ -1,12 +1,10 @@
 import { getConnections, PgTestClient } from 'supabase-test';
 
-let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  // use existing supabase database connection
-  ({ pg, db, teardown } = await getConnections());
+  ({ db, teardown } = await getConnections());
 });
 
 afterAll(async () => {
@@ -27,14 +25,14 @@ describe('tutorial: multi-user rls enforcement', () => {
 
     // create two users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['alice@example.com', 'Alice']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['bob@example.com', 'Bob']
@@ -48,14 +46,14 @@ describe('tutorial: multi-user rls enforcement', () => {
 
     // user1 can see their own data
     const ownData = await db.one(
-      `SELECT id, email FROM rls_test.users WHERE id = $1`,
+      `SELECT id, email FROM rls_test.user_profiles WHERE id = $1`,
       [user1.id]
     );
     expect(ownData.id).toBe(user1.id);
 
     // user1 cannot see user2's data
     await expect(
-      db.one(`SELECT id, email FROM rls_test.users WHERE id = $1`, [user2.id])
+      db.one(`SELECT id, email FROM rls_test.user_profiles WHERE id = $1`, [user2.id])
     ).rejects.toThrow();
   });
 
@@ -64,14 +62,14 @@ describe('tutorial: multi-user rls enforcement', () => {
 
     // create two users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['charlie@example.com', 'Charlie']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['diana@example.com', 'Diana']
@@ -121,14 +119,14 @@ describe('tutorial: multi-user rls enforcement', () => {
 
     // create two users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['eve@example.com', 'Eve']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['frank@example.com', 'Frank']
@@ -142,13 +140,13 @@ describe('tutorial: multi-user rls enforcement', () => {
 
     // user1 can update their own data
     await db.any(
-      `UPDATE rls_test.users SET name = $1 WHERE id = $2`,
+      `UPDATE rls_test.user_profiles SET name = $1 WHERE id = $2`,
       ['Eve Updated', user1.id]
     );
 
     // user1 cannot update user2's data - rls blocks it, affecting 0 rows
     const updateResult = await db.any(
-      `UPDATE rls_test.users SET name = $1 WHERE id = $2`,
+      `UPDATE rls_test.user_profiles SET name = $1 WHERE id = $2`,
       ['Hacked Name', user2.id]
     );
     expect(updateResult.length).toBe(0);
@@ -159,14 +157,14 @@ describe('tutorial: multi-user rls enforcement', () => {
 
     // create two users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['grace@example.com', 'Grace']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['henry@example.com', 'Henry']
@@ -213,14 +211,14 @@ describe('tutorial: multi-user rls enforcement', () => {
     // create two users as admin
     db.setContext({ role: 'service_role' });
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['iris@example.com', 'Iris']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['jack@example.com', 'Jack']
@@ -267,14 +265,14 @@ describe('tutorial: multi-user rls enforcement', () => {
     db.setContext({ role: 'service_role' });
     // create two users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['karen@example.com', 'Karen']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['larry@example.com', 'Larry']
@@ -310,21 +308,21 @@ describe('tutorial: multi-user rls enforcement', () => {
     db.setContext({role: 'service_role'});
     // create multiple users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['mary@example.com', 'Mary']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['nancy@example.com', 'Nancy']
     );
 
     const user3 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['oliver@example.com', 'Oliver']
@@ -338,7 +336,7 @@ describe('tutorial: multi-user rls enforcement', () => {
 
     // user1 should only see their own record in a list query
     const allUsers = await db.many(
-      `SELECT id, email, name FROM rls_test.users ORDER BY email`
+      `SELECT id, email, name FROM rls_test.user_profiles ORDER BY email`
     );
 
     expect(allUsers.length).toBe(1);

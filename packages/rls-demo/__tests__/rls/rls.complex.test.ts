@@ -32,7 +32,7 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
 
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id, email, name`,
       ['complex1@example.com', 'Complex User 1']
@@ -73,7 +73,7 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
          u.email as user_email,
          p.name as product_name,
          p.price as product_price
-       FROM rls_test.users u
+       FROM rls_test.user_profiles u
        JOIN rls_test.products p ON u.id = p.owner_id
        WHERE u.id = $1
        ORDER BY p.price DESC`,
@@ -91,14 +91,14 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
 
     // create multiple users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id, email, name`,
       ['complex-join1@example.com', 'Complex Join User 1']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id, email, name`,
       ['complex-join2@example.com', 'Complex Join User 2']
@@ -137,7 +137,7 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
 
     const result = await db.many(
       `SELECT u.name, p.name as product_name, p.price
-       FROM rls_test.users u
+       FROM rls_test.user_profiles u
        JOIN rls_test.products p ON u.id = p.owner_id
        ORDER BY u.name, p.name`
     );
@@ -153,7 +153,7 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
 
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['complex2@example.com', 'Complex User 2']
@@ -212,7 +212,7 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
 
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['complex3@example.com', 'Complex User 3']
@@ -265,14 +265,14 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
 
     // create two users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['complex4@example.com', 'Complex User 4']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['complex5@example.com', 'Complex User 5']
@@ -303,7 +303,7 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
          u.name,
          (SELECT COUNT(*) FROM rls_test.products p WHERE p.owner_id = u.id) as product_count,
          (SELECT SUM(price) FROM rls_test.products p WHERE p.owner_id = u.id) as total_value
-       FROM rls_test.users u
+       FROM rls_test.user_profiles u
        WHERE u.id = $1`,
       [user1.id]
     );
@@ -318,14 +318,14 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
 
     // create two users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['complex6@example.com', 'Complex User 6']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['complex7@example.com', 'Complex User 7']
@@ -378,7 +378,7 @@ describe('tutorial: complex rls queries with joins and aggregations', () => {
 
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['complex8@example.com', 'Complex User 8']

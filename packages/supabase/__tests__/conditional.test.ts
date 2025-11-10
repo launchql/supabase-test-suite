@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { getConnections, PgTestClient } from 'supabase-test';
 
 let pg: PgTestClient;
@@ -6,8 +5,6 @@ let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  
-  
   ({ pg, db, teardown } = await getConnections());
   
   // verify auth schema exists

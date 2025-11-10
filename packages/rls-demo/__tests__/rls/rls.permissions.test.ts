@@ -32,7 +32,7 @@ describe('tutorial: rls permission and access control patterns', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id, email`,
       ['email1@example.com', 'Email User 1']
@@ -53,7 +53,7 @@ describe('tutorial: rls permission and access control patterns', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['grant1@example.com', 'Grant User 1']
@@ -66,7 +66,7 @@ describe('tutorial: rls permission and access control patterns', () => {
 
     // user can access their own data
     const ownData = await db.one(
-      `SELECT id, email FROM rls_test.users WHERE id = $1`,
+      `SELECT id, email FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
     expect(ownData.id).toBe(user.id);
@@ -84,14 +84,14 @@ describe('tutorial: rls permission and access control patterns', () => {
     db.setContext({ role: 'service_role' });
 
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['service1@example.com', 'Service User 1']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['service2@example.com', 'Service User 2']
@@ -99,7 +99,7 @@ describe('tutorial: rls permission and access control patterns', () => {
 
     // service_role can see all users
     const allUsers = await db.many(
-      `SELECT id, email FROM rls_test.users ORDER BY email`
+      `SELECT id, email FROM rls_test.user_profiles ORDER BY email`
     );
     expect(allUsers.length).toBe(2);
 
@@ -123,7 +123,7 @@ describe('tutorial: rls permission and access control patterns', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['multi1@example.com', 'Multi Condition User 1']
@@ -176,14 +176,14 @@ describe('tutorial: rls permission and access control patterns', () => {
     db.setContext({ role: 'service_role' });
 
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['exists1@example.com', 'Exists User 1']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['exists2@example.com', 'Exists User 2']
@@ -216,7 +216,7 @@ describe('tutorial: rls permission and access control patterns', () => {
     const usersWithProducts = await db.many(
       `SELECT u.id, u.email, 
          EXISTS(SELECT 1 FROM rls_test.products p WHERE p.owner_id = u.id) as has_products
-       FROM rls_test.users u
+       FROM rls_test.user_profiles u
        WHERE u.id = $1`,
       [user1.id]
     );
@@ -227,7 +227,7 @@ describe('tutorial: rls permission and access control patterns', () => {
     // verify user2's products are not visible
     const user2Check = await db.any(
       `SELECT u.id 
-       FROM rls_test.users u
+       FROM rls_test.user_profiles u
        WHERE EXISTS(SELECT 1 FROM rls_test.products p WHERE p.owner_id = u.id AND u.id = $1)`,
       [user2.id]
     );
@@ -238,7 +238,7 @@ describe('tutorial: rls permission and access control patterns', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['permissions1@example.com', 'Permissions User 1']

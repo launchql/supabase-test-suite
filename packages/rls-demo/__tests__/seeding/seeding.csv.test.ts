@@ -16,7 +16,7 @@ beforeAll(async () => {
       seed.launchql(cwd),
       // load from csv
       seed.csv({
-        'rls_test.users': csv('users.csv'),
+        'rls_test.user_profiles': csv('users.csv'),
         'rls_test.products': csv('products.csv')
       })
     ]
@@ -33,7 +33,7 @@ describe('csv seeding', () => {
   it('has loaded rows from csv files', async () => {
     db.setContext({ role: 'service_role' });
 
-    const usersRes = await pg.query('SELECT COUNT(*) FROM rls_test.users');
+    const usersRes = await pg.query('SELECT COUNT(*) FROM rls_test.user_profiles');
     console.log('usersRes', usersRes);
     expect(+usersRes.rows[0].count).toBeGreaterThan(0);
 
@@ -42,7 +42,7 @@ describe('csv seeding', () => {
 
     // verify specific data was loaded
     const alice = await pg.one(
-      `SELECT * FROM rls_test.users WHERE email = $1`,
+      `SELECT * FROM rls_test.user_profiles WHERE email = $1`,
       ['alice@example.com']
     );
     expect(alice.name).toBe('Alice Johnson');

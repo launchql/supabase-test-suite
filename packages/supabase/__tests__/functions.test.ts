@@ -5,8 +5,6 @@ let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  
-  
   ({ pg, db, teardown } = await getConnections());
   
   // verify auth schema exists
@@ -56,7 +54,7 @@ describe('tutorial: rls with supabase functions', () => {
     );
     expect(funcExists[0].exists).toBe(true);
     
-    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // using auth.users (real supabase table) instead of rls_test.user_profiles (fake test table)
     // set service_role context to insert into auth.users (requires INSERT permission)
     const user = await pg.one(
       `INSERT INTO auth.users (id, email) 
@@ -108,7 +106,7 @@ describe('tutorial: rls with supabase functions', () => {
     );
     expect(funcExists[0].exists).toBe(true);
     
-    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // using auth.users (real supabase table) instead of rls_test.user_profiles (fake test table)
     // use pg for auth.users insert since it requires superuser privileges
     const user = await pg.one(
       `INSERT INTO auth.users (id, email) 
@@ -141,7 +139,7 @@ describe('tutorial: rls with supabase functions', () => {
     );
     expect(funcExists[0].exists).toBe(true);
     
-    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // using auth.users (real supabase table) instead of rls_test.user_profiles (fake test table)
     // use pg for auth.users insert since it requires superuser privileges
     const user = await pg.one(
       `INSERT INTO auth.users (id, email) 
@@ -215,7 +213,7 @@ describe('tutorial: rls with supabase functions', () => {
     );
     expect(funcExists[0].exists).toBe(true);
     
-    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // using auth.users (real supabase table) instead of rls_test.user_profiles (fake test table)
     // use pg for auth.users insert since it requires superuser privileges
     const user = await pg.one(
       `INSERT INTO auth.users (id, email) 
@@ -239,7 +237,7 @@ describe('tutorial: rls with supabase functions', () => {
     );
     expect(funcExists[0].exists).toBe(true);
     
-    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // using auth.users (real supabase table) instead of rls_test.user_profiles (fake test table)
     // use pg for auth.users insert since it requires superuser privileges
     const user = await pg.one(
       `INSERT INTO auth.users (id, email) 

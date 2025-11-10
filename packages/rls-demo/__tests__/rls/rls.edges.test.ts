@@ -1,11 +1,10 @@
 import { getConnections, PgTestClient } from 'supabase-test';
 
-let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  ({ pg, db, teardown } = await getConnections());
+  ({ db, teardown } = await getConnections());
 });
 
 afterAll(async () => {
@@ -25,7 +24,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['missing1@example.com', 'Missing Context User 1']
@@ -39,7 +38,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
 
     // should not be able to access user data
     const result = await db.any(
-      `SELECT id FROM rls_test.users WHERE id = $1`,
+      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
     expect(result.length).toBe(0);
@@ -54,7 +53,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
 
     // operations should fail when auth.uid() tries to parse invalid uuid
     await expect(
-      db.any(`SELECT id FROM rls_test.users`)
+      db.any(`SELECT id FROM rls_test.user_profiles`)
     ).rejects.toThrow();
   });
 
@@ -62,14 +61,14 @@ describe('tutorial: rls edge cases and error scenarios', () => {
     db.setContext({ role: 'service_role' });
 
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['concurrent1@example.com', 'Concurrent User 1']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['concurrent2@example.com', 'Concurrent User 2']
@@ -122,7 +121,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['empty1@example.com', 'Empty Value User 1']
@@ -157,7 +156,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['null1@example.com', 'Null Context User 1']
@@ -171,7 +170,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
 
     // should not access user data
     const result = await db.any(
-      `SELECT id FROM rls_test.users WHERE id = $1`,
+      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
     expect(result.length).toBe(0);
@@ -181,7 +180,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['large1@example.com', 'Large Result User 1']
@@ -221,7 +220,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['transaction1@example.com', 'Transaction User 1']
@@ -274,7 +273,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['nested1@example.com', 'Nested Query User 1']
@@ -314,7 +313,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
           FROM rls_test.products p2 
           WHERE p2.owner_id = u.id 
           AND p2.price > (SELECT MIN(price) FROM rls_test.products p3 WHERE p3.owner_id = u.id)) as avg_above_min
-       FROM rls_test.users u
+       FROM rls_test.user_profiles u
        WHERE u.id = $1`,
       [user.id]
     );
@@ -327,7 +326,7 @@ describe('tutorial: rls edge cases and error scenarios', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['union1@example.com', 'Union User 1']

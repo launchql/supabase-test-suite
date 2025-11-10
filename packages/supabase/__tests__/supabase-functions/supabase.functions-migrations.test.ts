@@ -118,7 +118,7 @@ describe('tutorial: supabase_functions migrations table access', () => {
 
   it('should verify authenticated users access to migrations based on rls', async () => {
     // create a test user as admin
-    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // using auth.users (real supabase table) instead of rls_test.user_profiles (fake test table)
     // use pg for auth.users insert since it requires superuser privileges
     const user = await pg.one(
       `INSERT INTO auth.users (id, email) 

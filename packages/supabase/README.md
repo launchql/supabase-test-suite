@@ -1,48 +1,37 @@
-# auth
+# @launchql/supabase
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/launchql/launchql/refs/heads/main/assets/outline-logo.svg" width="250"><br />
-    undefined
+<p align="center" width="100%">
+  <img height="250" src="https://raw.githubusercontent.com/launchql/supabase-test/refs/heads/main/docs/img/logos.svg" />
 </p>
 
-## install
+<p align="center" width="100%">
+  <a href="https://github.com/launchql/supabase-test/actions/workflows/ci.yml">
+    <img height="20" src="https://github.com/launchql/supabase-test/actions/workflows/ci.yml/badge.svg" />
+  </a>
+   <a href="https://github.com/launchql/supabase-test/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+</p>
 
-```sh
-npm install auth
+Supabase-focused SQL, tests, and helpers for building robust applications with Row-Level Security.
+
+## Features
+
+- 🔐 Supabase auth integration helpers
+- 🧪 Test utilities for RLS policies
+- 📦 Reusable SQL patterns and functions
+- ⚡ Optimized for Supabase local development
+
+## Quick Start
+
+```bash
+# Run tests
+pnpm test
+
+# Watch mode for development
+pnpm test:watch
 ```
-## Table of contents
-
-- [auth](#auth)
-  - [Install](#install)
-  - [Table of contents](#table-of-contents)
-- [Developing](#developing)
-- [Credits](#credits)
-
-## Developing
-
-When first cloning the repo:
-
-```sh
-yarn
-# build the prod packages. When devs would like to navigate to the source code, this will only navigate from references to their definitions (.d.ts files) between packages.
-yarn build
-```
-
-Or if you want to make your dev process smoother, you can run:
-
-```sh
-yarn
-# build the dev packages with .map files, this enables navigation from references to their source code between packages.
-yarn build:dev
-```
-
-## Credits
-
-🛠 Built by Hyperweb (formerly Cosmology) — if you like our tools, please checkout and contribute to [our github ⚛️](https://github.com/hyperweb-io)
-
 
 ## Disclaimer
 
-AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED “AS IS”, AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
+AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED "AS IS", AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
 
 No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.

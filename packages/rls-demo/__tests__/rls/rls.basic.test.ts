@@ -1,27 +1,10 @@
 import { getConnections, PgTestClient } from 'supabase-test';
 
-let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
-// REMOVE THIS BEFORE MERGING
-
 beforeAll(async () => {
-  // process.env.PGHOST = 'localhost';
-  // process.env.PGPORT = '54322';
-  // process.env.PGUSER = 'supabase_admin';
-  // process.env.PGPASSWORD = 'postgres';
-
-  ({ pg, db, teardown } = await getConnections({
-
-    pg: {
-      host: 'localhost',
-      port: 54322,
-      user: 'supabase_admin',
-      password: 'postgres',
-    }
-
-  }));
+  ({ db, teardown } = await getConnections());
 });
 
 afterAll(async () => {
@@ -42,7 +25,7 @@ describe('tutorial: basic rls crud operations', () => {
 
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id, email, name`,
       ['tutorial1@example.com', 'Tutorial User 1']
@@ -56,7 +39,7 @@ describe('tutorial: basic rls crud operations', () => {
 
     // verify user can see their own record
     const ownRecord = await db.one(
-      `SELECT id, email, name FROM rls_test.users WHERE id = $1`,
+      `SELECT id, email, name FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
 
@@ -70,7 +53,7 @@ describe('tutorial: basic rls crud operations', () => {
 
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['tutorial2@example.com', 'Tutorial User 2']
@@ -100,7 +83,7 @@ describe('tutorial: basic rls crud operations', () => {
 
     // create user and product as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['tutorial3@example.com', 'Tutorial User 3']
@@ -143,7 +126,7 @@ describe('tutorial: basic rls crud operations', () => {
     db.setContext({ role: 'service_role' });
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['tutorial4@example.com', 'Tutorial User 4']
@@ -157,7 +140,7 @@ describe('tutorial: basic rls crud operations', () => {
 
     // user can update their own record
     const updated = await db.one(
-      `UPDATE rls_test.users 
+      `UPDATE rls_test.user_profiles 
        SET name = $1 
        WHERE id = $2 
        RETURNING id, name, updated_at`,
@@ -173,7 +156,7 @@ describe('tutorial: basic rls crud operations', () => {
     // create user and product as admin
     db.setContext({ role: 'service_role' });
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['tutorial5@example.com', 'Tutorial User 5']
@@ -210,7 +193,7 @@ describe('tutorial: basic rls crud operations', () => {
     db.setContext({ role: 'service_role' });
     // create user and products as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['tutorial6@example.com', 'Tutorial User 6']
@@ -259,7 +242,7 @@ describe('tutorial: basic rls crud operations', () => {
     db.setContext({ role: 'service_role' });
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['tutorial7@example.com', 'Tutorial User 7']
@@ -273,13 +256,13 @@ describe('tutorial: basic rls crud operations', () => {
 
     // user can delete their own record
     await db.any(
-      `DELETE FROM rls_test.users WHERE id = $1`,
+      `DELETE FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
 
     // verify record is gone
     const result = await db.any(
-      `SELECT id FROM rls_test.users WHERE id = $1`,
+      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
 

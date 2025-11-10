@@ -24,7 +24,7 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced1@example.com', 'Advanced User 1']
@@ -43,7 +43,7 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
     );
 
     const verifiedUsers = await db.any(
-      `SELECT id FROM rls_test.users WHERE id = $1`,
+      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
     expect(verifiedUsers.length).toBe(1);
@@ -57,7 +57,7 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
     db.clearContext();
     
     const anonUsers = await db.any(
-      `SELECT id FROM rls_test.users WHERE id = $1`,
+      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
     expect(anonUsers.length).toBe(0);
@@ -76,7 +76,7 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
 
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced2@example.com', 'Advanced User 2']
@@ -104,14 +104,14 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
 
     // create two users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced3@example.com', 'Advanced User 3']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced4@example.com', 'Advanced User 4']
@@ -154,14 +154,14 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
 
     // create multiple users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced5@example.com', 'Advanced User 5']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced6@example.com', 'Advanced User 6']
@@ -213,7 +213,7 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
 
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced7@example.com', 'Advanced User 7']
@@ -245,7 +245,7 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
 
     // user deletes themselves - products should cascade delete
     await db.any(
-      `DELETE FROM rls_test.users WHERE id = $1`,
+      `DELETE FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
 
@@ -264,21 +264,21 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
 
     // create three users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced8@example.com', 'Advanced User 8']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced9@example.com', 'Advanced User 9']
     );
 
     const user3 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced10@example.com', 'Advanced User 10']
@@ -332,7 +332,7 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
 
     // create user as admin
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced11@example.com', 'Advanced User 11']
@@ -346,7 +346,7 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
 
     // should not be able to access user data with null user_id
     await expect(
-      db.one(`SELECT id FROM rls_test.users WHERE id = $1`, [user.id])
+      db.one(`SELECT id FROM rls_test.user_profiles WHERE id = $1`, [user.id])
     ).rejects.toThrow();
   });
 
@@ -356,14 +356,14 @@ describe('tutorial: advanced rls edge cases and scenarios', () => {
 
     // create two users as admin
     const user1 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced12@example.com', 'Advanced User 12']
     );
 
     const user2 = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['advanced13@example.com', 'Advanced User 13']

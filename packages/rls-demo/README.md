@@ -1,41 +1,43 @@
-# @lql-pg/rls-demo
+# Supabase RLS Demo
 
-RLS (Row Level Security) demo extension for PostgreSQL.
+<p align="center" width="100%">
+  <img height="250" src="https://raw.githubusercontent.com/launchql/supabase-test/refs/heads/main/docs/img/logos.svg" />
+</p>
 
-Provides a demonstration of Row Level Security implementation with users and products tables, including:
-- `rls_test` schema with proper RLS policies
-- `users` table with RLS policies for user data access
-- `products` table with RLS policies for product ownership
-- Foreign key relationships and proper indexing
-- Automatic `updated_at` timestamp triggers
+<p align="center" width="100%">
+  <a href="https://github.com/launchql/supabase-test/actions/workflows/ci.yml">
+    <img height="20" src="https://github.com/launchql/supabase-test/actions/workflows/ci.yml/badge.svg" />
+  </a>
+   <a href="https://github.com/launchql/supabase-test/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
+</p>
 
-## Sample Data
+Supabase RLS (Row Level Security) demo, showcasing best practices for implementing secure, multi-tenant applications.
 
-This package includes sample data to demonstrate RLS functionality:
+## Features
 
-### Users
-- Alice Johnson (alice@example.com)
-- Bob Smith (bob@example.com) 
-- Charlie Brown (charlie@example.com)
-- Diana Prince (diana@example.com)
+- 🔐 Complete RLS implementation with users and products tables
+- 👥 Multi-tenant data isolation using Supabase auth
+- 🧪 Comprehensive test suite with real-world scenarios
 
-### Products
-- Alice owns: Laptop Pro ($1299.99), Wireless Mouse ($49.99)
-- Bob owns: Mechanical Keyboard ($149.99), Monitor 4K ($399.99)
-- Charlie owns: Webcam HD ($89.99), Headphones ($199.99)
-- Diana owns: Standing Desk ($599.99), Desk Lamp ($79.99)
+## Schema Overview
 
-## Data Insertion
+The `rls_test` schema includes:
+- **user_profiles** table with RLS policies for user data access
+- **products** table with RLS policies for product ownership
+- Proper foreign key constraints and indexes
 
-### Using SQL File
+## Quick Start
+
 ```bash
-psql -d your_database -f seed-data.sql
+# Run tests
+pnpm test
+
+# Watch mode for development
+pnpm test:watch
 ```
 
-### Using Node.js Script
-```bash
-node insert-data.js
-```
+## Disclaimer
 
-### Using pgsql-test
-The test suite includes comprehensive data insertion and RLS testing examples.
+AS DESCRIBED IN THE LICENSES, THE SOFTWARE IS PROVIDED "AS IS", AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND.
+
+No developer or entity involved in creating this software will be liable for any claims or damages whatsoever associated with your use, inability to use, or your interaction with other users of the code, including any direct, indirect, incidental, special, exemplary, punitive or consequential damages, or loss of profits, cryptocurrencies, tokens, or anything else of value.

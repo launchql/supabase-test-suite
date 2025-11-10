@@ -115,7 +115,7 @@ describe('tutorial: realtime subscription table access', () => {
     }
     
     // create a test user as admin using db with service_role context
-    // using auth.users (real supabase table) instead of rls_test.users (fake test table)
+    // using auth.users (real supabase table) instead of rls_test.user_profiles (fake test table)
     db.setContext({ role: 'service_role' });
     const user = await db.one(
       `INSERT INTO auth.users (id, email) 

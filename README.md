@@ -11,81 +11,57 @@
    <a href="https://github.com/launchql/supabase-test/blob/main/LICENSE"><img height="20" src="https://img.shields.io/badge/license-MIT-blue.svg"/></a>
 </p>
 
+A friendly playground for building and validating Supabase Row-Level Security (RLS) using LaunchQL. It includes real-world examples, migrations, and a comprehensive test suite you can run locally.
 
-A friendly playground for building and validating Supabase Row‑Level Security (RLS) using LaunchQL. It includes real‑world examples, migrations, and a comprehensive test suite you can run locally.
-
-Built with [supabase-test](https://www.npmjs.com/package/supabase-test) — a Supabase‑optimized version of `pgsql-test` for instant, isolated Postgres test databases with automatic rollbacks and Supabase defaults. See the package for install and features.
+Built with [supabase-test](https://www.npmjs.com/package/supabase-test) — a Supabase-optimized version of `pgsql-test` for instant, isolated Postgres test databases with automatic rollbacks and Supabase defaults.
 
 ## Features
 
-- 🔐 RLS policy‑driven example tests with example product database using Supabase users
-- 🧪 Comprehensive end‑to‑end test suite against native Supabase schemas/tables (auth, storage, functions, realtime, and more)
-- 🐘 Supabase CLI local stack for zero‑setup Postgres
-- 🧪 Jest‑based tests that exercise RLS behavior end‑to‑end
-- 🚀 GitHub Actions workflows to run integration/e2e tests in CI/CD
-- 🧩 Modular schema packages you can reuse and extend
+- 🔐 **RLS Policy Testing** - Real-world examples with users and products tables
+- 🧪 **Comprehensive Test Suite** - End-to-end tests against native Supabase schemas
+- 🐘 **Zero-Setup Postgres** - Supabase CLI local stack for instant development
+- ⚡ **Jest Integration** - Fast, isolated tests with automatic rollbacks
+- 🚀 **CI/CD Ready** - GitHub Actions workflows for automated testing
+- 🧩 **Modular Architecture** - Reusable schema packages you can extend
 
-## Quick start (tl;dr)
+## Quick Start
 
 ```bash
-# bring up a local supabase stack
+# Initialize and start local Supabase stack
 npx supabase init
 npx supabase start
 
-# install deps and run all package tests
+# Install dependencies
 pnpm install
 
-# rls-demo: run tests in watch mode
+# Run tests in watch mode
 cd packages/rls-demo
 pnpm test:watch
 ```
 
-## getting started (step by step)
+## Repository Structure
 
-this section will walk through everything slowly, from installing tools to running focused tests and exploring the schemas.
+This is a LaunchQL workspace combining `pnpm` and `lql` for modular Postgres packages:
 
-1. install prerequisites (node, pnpm, supabase cli)
-2. initialize supabase and confirm services are healthy
-3. configure pg env vars if your shell needs them
-4. run migrations or package deploys as needed
-5. run tests (full suite and targeted)
-6. inspect policies and iterate
+- **`packages/supabase`** - Supabase-focused SQL, tests, and helpers
+- **`packages/rls-demo`** - Demo extension showcasing RLS with users/products
 
-for the expanded guide with screenshots and copy‑paste commands, see `docs/img/USAGE.md` (coming soon).
+## Testing
 
-## repository layout
-
-The repository is a launchql workspace, which is a hybrid `pnpm`/`lql` workspace, which allows for modular postgres packages, that can be easily tested via `pgsql-test`, or in the case of this repository, `supabase-test`. Here are the packages of interest:
-
-- `packages/supabase`: supabase‑focused sql, tests, and helpers
-- `packages/rls-demo`: demo extension showcasing rls with users/products
-
-## testing
-
-If you want to see how to run tests in each of the relevant packages, here are handy snippets you may want to learn:
+Run tests in different modes:
 
 ```bash
-# rls-demo: run tests in watch mode
+# Run all tests from root
+pnpm test
+
+# Watch mode for specific package
 cd packages/rls-demo
 pnpm test:watch
 
-# edit tests in packages/rls-demo/__tests__/... and Jest will re-run
-```
-
-```bash
-# supabase: run tests in watch mode
+# Run Supabase package tests
 cd packages/supabase
 pnpm test:watch
 ```
-
-```bash
-# run all packages’ tests from the repo root
-pnpm test
-```
-
-## Adding a package using `lql`
-
-- [ ] TODO
 
 ## Requirements
 
@@ -93,9 +69,9 @@ pnpm test
 - pnpm 10+
 - Supabase CLI 2+
 
-## troubleshooting
+## Troubleshooting
 
-- if your environment needs explicit pg variables, export and retry:
+If you encounter connection issues, set your environment variables:
 
 ```bash
 export PGPORT=54322
@@ -104,9 +80,10 @@ export PGUSER=postgres
 export PGPASSWORD=postgres
 ```
 
-- if `pnpm test` can’t reach postgres, confirm supabase services are running and the `PG*` env vars match the port printed by `npx supabase start`
-- if ports are busy, stop old containers or pass a different port to supabase
-- node version mismatches can cause odd errors; use node 20+
+Common issues:
+- Ensure Supabase services are running (`npx supabase status`)
+- Check that ports match those shown by `npx supabase start`
+- Use Node.js 20+ to avoid compatibility issues
 
 ## Related LaunchQL Tooling
 

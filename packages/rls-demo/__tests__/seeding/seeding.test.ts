@@ -1,18 +1,10 @@
 import { getConnections, PgTestClient, seed } from 'supabase-test';
-import path from 'path';
 
-let pg: PgTestClient;
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
-const cwd = path.resolve(__dirname, '../../');
-
 beforeAll(async () => {
-  ({ pg, db, teardown } = await getConnections(
-    {}, [
-        seed.launchql(cwd)
-    ]
-  ));
+  ({ db, teardown } = await getConnections());
 });
 
 afterAll(async () => {
@@ -32,7 +24,7 @@ describe('tutorial: testing with seeded data', () => {
     db.setContext({ role: 'service_role' });
 
     const user = await db.one(
-      `INSERT INTO rls_test.users (email, name) 
+      `INSERT INTO rls_test.user_profiles (email, name) 
        VALUES ($1, $2) 
        RETURNING id`,
       ['seeding1@example.com', 'Seeding User 1']
@@ -51,7 +43,7 @@ describe('tutorial: testing with seeded data', () => {
     );
 
     const verifiedUsers = await db.any(
-      `SELECT id FROM rls_test.users WHERE id = $1`,
+      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
     expect(verifiedUsers.length).toBe(1);
@@ -65,7 +57,7 @@ describe('tutorial: testing with seeded data', () => {
     db.clearContext();
     
     const anonUsers = await db.any(
-      `SELECT id FROM rls_test.users WHERE id = $1`,
+      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
       [user.id]
     );
     expect(anonUsers.length).toBe(0);
