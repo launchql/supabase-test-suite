@@ -1,18 +1,15 @@
 export const users = [
   {
     id: '550e8400-e29b-41d4-a716-446655440001',
-    email: 'tutorial1@example.com',
-    name: 'Tutorial User 1'
+    email: 'tutorial1@example.com'
   },
   {
     id: '550e8400-e29b-41d4-a716-446655440002',
-    email: 'tutorial2@example.com',
-    name: 'Tutorial User 2'
+    email: 'tutorial2@example.com'
   },
   {
     id: '550e8400-e29b-41d4-a716-446655440003',
-    email: 'tutorial3@example.com',
-    name: 'Tutorial User 3'
+    email: 'tutorial3@example.com'
   }
 ];
 
