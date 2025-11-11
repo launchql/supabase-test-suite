@@ -7,11 +7,13 @@ let teardown: () => Promise<void>;
 
 let user1: any;
 let user2: any;
+let user3: any;
 
 beforeAll(async () => {
   ({ pg, db, teardown } = await getConnections());
   user1 = await insertUser(pg, 'tutorial1@example.com');
   user2 = await insertUser(pg, 'tutorial2@example.com');
+  user3 = await insertUser(pg, 'tutorial3@example.com');
 });
 
 afterAll(async () => {
@@ -79,5 +81,69 @@ describe('tutorial: basic rls crud operations', () => {
       )
     ).rejects.toThrow();
   });
+
+  it('should allow users to see only their own data in list queries', async () => {
+    // db.setContext({role: 'service_role'});
+
+    // set context to user1
+    db.setContext({
+      role: 'authenticated',
+      'request.jwt.claim.sub': user1.id
+    });
+
+
+    // create multiple users as admin
+    await db.one(
+      `INSERT INTO rls_test.pets (name, breed, user_id) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      ['Fido', 'Labrador', user1.id]
+    );
+
+    // set context to user1
+    db.setContext({
+      role: 'authenticated',
+      'request.jwt.claim.sub': user2.id
+    });
+
+
+    await db.one(
+      `INSERT INTO rls_test.pets (name, breed, user_id) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      ['Buddy', 'Golden Retriever', user2.id]
+    );
+
+    // set context to user1
+    db.setContext({
+      role: 'authenticated',
+      'request.jwt.claim.sub': user3.id
+    });
+
+
+    await db.one(
+      `INSERT INTO rls_test.pets (name, breed, user_id) 
+       VALUES ($1, $2, $3) 
+       RETURNING id`,
+      ['Rex', 'German Shepherd', user3.id]
+    );
+
+    // set context to user1
+    db.setContext({
+      role: 'authenticated',
+      'request.jwt.claim.sub': user1.id
+    });
+
+    // user1 should only see their own record in a list query
+    const allUsers = await db.many(
+      `SELECT id, name, breed, user_id FROM rls_test.pets ORDER BY name`
+    );
+
+    expect(allUsers.length).toBe(1);
+    expect(allUsers[0].user_id).toBe(user1.id);
+    expect(allUsers[0].name).toBe('Fido');
+    expect(allUsers[0].breed).toBe('Labrador');
+  });
+
 });
 
