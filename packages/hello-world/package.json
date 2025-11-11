@@ -7,11 +7,7 @@
     "access": "public"
   },
   "scripts": {
-    "bundle": "lql package",
     "test": "jest",
     "test:watch": "jest --watch"
-  },
-  "devDependencies": {
-    "@launchql/cli": "^4.12.3"
   }
 }
