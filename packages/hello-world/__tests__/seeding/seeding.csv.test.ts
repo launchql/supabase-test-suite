@@ -1,5 +1,5 @@
-import { getConnections, PgTestClient, seed } from 'supabase-test';
 import path from 'path';
+import { getConnections, PgTestClient, seed } from 'supabase-test';
 import { users } from './data/seed-data';
 
 let pg: PgTestClient;
@@ -7,14 +7,13 @@ let db: PgTestClient;
 let teardown: () => Promise<void>;
 
 const csv = (file: string) => path.resolve(__dirname, './data', file);
-const cwd = path.resolve(__dirname, '../../');
 
 beforeAll(async () => {
   ({ pg, db, teardown } = await getConnections(
     {},
     [
-      // create schema
-      seed.launchql(cwd),
+      // load schema and it's dependencies (supabase full schema)
+      seed.launchql(),
       
       // load from csv
       seed.csv({

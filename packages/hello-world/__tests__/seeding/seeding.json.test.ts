@@ -1,23 +1,22 @@
 import { getConnections, PgTestClient, seed } from 'supabase-test';
-import path from 'path';
 import { pets, users } from './data/seed-data';
 
 let db: PgTestClient;
 let teardown: () => Promise<void>;
 
-const sql = (f: string) => path.join(__dirname, 'data', f);
-
-const cwd = path.resolve(__dirname, '../../');
-
 beforeAll(async () => {
   ({ db, teardown } = await getConnections(
-    {}, [
-    seed.launchql(cwd),
-    seed.json({
-      'auth.users': users,
-      'rls_test.pets': pets
-    })
-  ]
+    {},
+    [
+      // load schema and it's dependencies (supabase full schema)
+      seed.launchql(),
+
+      // load data from json files
+      seed.json({
+        'auth.users': users,
+        'rls_test.pets': pets
+      })
+    ]
   ));
 });
 
@@ -34,7 +33,7 @@ afterEach(async () => {
 });
 
 describe('tutorial: testing with sql file seeding', () => {
-  it('should work with sql file seed function', async () => {
+  it('data should be loaded into the database', async () => {
 
     db.setContext({
       role: 'authenticated',
