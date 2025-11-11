@@ -11,10 +11,11 @@ const cwd = path.resolve(__dirname, '../../');
 beforeAll(async () => {
   ({ db, teardown } = await getConnections(
     {}, [
-      seed.launchql(cwd),
-      seed.sqlfile([
-        sql('seed-data.sql'),
-      ])    ]
+    seed.launchql(cwd),
+    seed.sqlfile([
+      sql('seed-data.sql'),
+    ])
+  ]
   ));
 });
 
@@ -30,55 +31,45 @@ afterEach(async () => {
   await db.afterEach();
 });
 
+const users = [
+  {
+    id: '550e8400-e29b-41d4-a716-446655440001',
+    email: 'tutorial1@example.com',
+    name: 'Tutorial User 1'
+  },
+  {
+    id: '550e8400-e29b-41d4-a716-446655440002',
+    email: 'tutorial2@example.com',
+    name: 'Tutorial User 2'
+  },
+  {
+    id: '550e8400-e29b-41d4-a716-446655440003',
+    email: 'tutorial3@example.com',
+    name: 'Tutorial User 3'
+  }
+];
+
 describe('tutorial: testing with sql file seeding', () => {
   it('should work with sql file seed function', async () => {
 
-    db.setContext({ role: 'service_role' });
-
-    const user = await db.one(
-      `INSERT INTO rls_test.user_profiles (email, name) 
-       VALUES ($1, $2) 
-       RETURNING id`,
-      ['sql-seed1@example.com', 'SQL Seed User 1']
-    );
-
     db.setContext({
       role: 'authenticated',
-      'request.jwt.claim.sub': user.id
+      'request.jwt.claim.sub': users[0].id
     });
 
-    await db.one(
-      `INSERT INTO rls_test.products (name, description, price, owner_id) 
-       VALUES ($1, $2, $3, $4) 
-       RETURNING id`,
-      ['Secret Product', 'Should not be visible', 100.00, user.id]
+    const verifiedPets = await db.any(
+      `SELECT id FROM rls_test.pets WHERE user_id = $1`,
+      [users[0].id]
     );
-
-    const verifiedUsers = await db.any(
-      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
-      [user.id]
-    );
-    expect(verifiedUsers.length).toBe(1);
-
-    const verifiedProducts = await db.any(
-      `SELECT id FROM rls_test.products WHERE owner_id = $1`,
-      [user.id]
-    );
-    expect(verifiedProducts.length).toBe(1);
+    expect(verifiedPets.length).toBe(1);
 
     db.clearContext();
-    
-    const anonUsers = await db.any(
-      `SELECT id FROM rls_test.user_profiles WHERE id = $1`,
-      [user.id]
-    );
-    expect(anonUsers.length).toBe(0);
 
-    const anonProducts = await db.any(
-      `SELECT id FROM rls_test.products WHERE owner_id = $1`,
-      [user.id]
+    const anonPets = await db.any(
+      `SELECT id FROM rls_test.pets WHERE user_id = $1`,
+      [users[0].id]
     );
-    expect(anonProducts.length).toBe(0);
+    expect(anonPets.length).toBe(0);
 
   });
 
