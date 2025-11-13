@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "author": "Interweb <developers@interweb.co>",
   "description": "Hello World extension with Row Level Security (RLS) demo",
-  "publishConfig": {
-    "access": "public"
-  },
+  "private": true,
   "scripts": {
+    "clean": "rimraf dist/**",
+    "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
-  }
+  },
+  "keywords": []
 }

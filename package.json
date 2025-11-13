@@ -21,7 +21,8 @@
   "scripts": {
     "bundle": "pnpm -r bundle",
     "lint": "pnpm -r lint",
-    "test": "pnpm -r test"
+    "test": "pnpm -r test",
+    "up-i": "pnpm up -i -L"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
@@ -29,8 +30,6 @@
     "@types/node": "^22.10.4",
     "@typescript-eslint/eslint-plugin": "^8.46.4",
     "@typescript-eslint/parser": "^8.46.4",
-    "copyfiles": "^2.4.1",
-    "cpy-cli": "^6.0.0",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-simple-import-sort": "^12.1.0",
@@ -40,7 +39,7 @@
     "lerna": "^8.2.3",
     "prettier": "^3.0.2",
     "rimraf": "4.4.1",
-    "supabase-test": "^0.0.14",
+    "supabase-test": "^0.0.16",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"

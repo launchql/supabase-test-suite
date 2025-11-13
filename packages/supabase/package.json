@@ -1,5 +1,5 @@
 {
-  "name": "@launchql/supabase",
+  "name": "@lql-pg/supabase",
   "version": "0.0.1",
   "author": "Interweb <developers@interweb.co>",
   "license": "MIT",
@@ -7,7 +7,6 @@
     "access": "public"
   },
   "scripts": {
-    "clean": "rimraf dist/**",
     "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
