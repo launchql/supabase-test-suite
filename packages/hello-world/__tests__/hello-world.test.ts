@@ -26,7 +26,7 @@ const users = [
 beforeAll(async () => {
   ({ pg, db, teardown } = await getConnections());
 
-  // insert users using pg PgTestClient to bypass RLS (supabase auth.users table is not granted access)
+  // insert users using pg PgTestClient to bypass RLS (required to insert into supabase auth.users)
   user1 = await insertUser(pg, users[0].email, users[0].id);
   user2 = await insertUser(pg, users[1].email, users[1].id);
   user3 = await insertUser(pg, users[2].email, users[2].id);

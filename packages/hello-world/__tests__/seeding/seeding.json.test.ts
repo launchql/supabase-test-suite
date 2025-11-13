@@ -1,23 +1,19 @@
 import { getConnections, PgTestClient, seed } from 'supabase-test';
 import { pets, users } from './data/seed-data';
 
+// pg is used to have RLS bypass (required to insert into supabase auth.users)
 let db: PgTestClient;
+// db is used to test the RLS policies in test cases
+let pg: PgTestClient;
 let teardown: () => Promise<void>;
 
 beforeAll(async () => {
-  ({ db, teardown } = await getConnections(
-    {},
-    [
-      // load schema and it's dependencies (supabase full schema)
-      seed.launchql(),
+  ({ pg, db, teardown } = await getConnections());
 
-      // load data from json files
-      seed.json({
-        'auth.users': users,
-        'rls_test.pets': pets
-      })
-    ]
-  ));
+  await pg.loadJson({
+    'auth.users': users,
+    'rls_test.pets': pets
+  });
 });
 
 afterAll(async () => {

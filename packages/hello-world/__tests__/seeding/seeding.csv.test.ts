@@ -2,26 +2,22 @@ import path from 'path';
 import { getConnections, PgTestClient, seed } from 'supabase-test';
 import { users } from './data/seed-data';
 
-let pg: PgTestClient;
+// pg is used to have RLS bypass (required to insert into supabase auth.users)
 let db: PgTestClient;
+// db is used to test the RLS policies in test cases
+let pg: PgTestClient;
 let teardown: () => Promise<void>;
 
 const csv = (file: string) => path.resolve(__dirname, './data', file);
 
 beforeAll(async () => {
-  ({ pg, db, teardown } = await getConnections(
-    {},
-    [
-      // load schema and it's dependencies (supabase full schema)
-      seed.launchql(),
-      
-      // load from csv
-      seed.csv({
-        'auth.users': csv('users.csv'),
-        'rls_test.pets': csv('pets.csv')
-      })
-    ]
-  ));
+  ({ pg, db, teardown } = await getConnections());
+
+  await pg.loadCsv({
+    'auth.users': csv('users.csv'),
+    'rls_test.pets': csv('pets.csv')
+  });
+
 });
 
 afterAll(async () => {
