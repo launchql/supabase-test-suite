@@ -51,8 +51,8 @@ importers:
         specifier: 4.4.1
         version: 4.4.1
       supabase-test:
-        specifier: ^0.0.14
-        version: 0.0.14(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))
+        specifier: ^0.0.15
+        version: 0.0.15(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))
       ts-jest:
         specifier: ^29.4.5
         version: 29.4.5(@babel/core@7.28.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.0))(jest-util@29.7.0)(jest@29.7.0(@types/node@22.17.1)(ts-node@10.9.2(@types/node@22.17.1)(typescript@5.9.3)))(typescript@5.9.3)
@@ -96,51 +96,51 @@ packages:
   '@aws-crypto/util@5.2.0':
     resolution: {integrity: sha512-4RkU9EsI6ZpBve5fseQlGNUWKMa1RLPQ1dnjnQoe07ldfIzcsGb5hC5W0Dm7u423KWzawlrpbjXBrXCEv9zazQ==}
 
-  '@aws-sdk/client-s3@3.930.0':
-    resolution: {integrity: sha512-5ddhr3ShseFRIdNXH8bkh1CIC78p0ZXpa7HJZpONDU3JGvd/B+yHHgTr141rtgoFTaW0gjPdbdtqtPLnhlnK+A==}
+  '@aws-sdk/client-s3@3.931.0':
+    resolution: {integrity: sha512-p+ZSRvmylk/pNImGDvLt3lOkILOexNcYvsCjvN2TR9X8RvxvPURISVp2qdGKdwUr/zkshteg1x/30GYlcTKs5g==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/client-sso@3.930.0':
-    resolution: {integrity: sha512-sASqgm1iMLcmi+srSH9WJuqaf3GQAKhuB4xIJwkNEPUQ+yGV8HqErOOHJLXXuTUyskcdtK+4uMaBRLT2ESm+QQ==}
+  '@aws-sdk/client-sso@3.931.0':
+    resolution: {integrity: sha512-GM/CARsIUQGEspM9VhZaftFVXnNtFNUUXjpM1ePO4CHk1J/VFvXcsQr3SHWIs0F4Ll6pvy5LpcRlWW5pK7T4aQ==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/core@3.930.0':
-    resolution: {integrity: sha512-E95pWT1ayfRWg0AW2KNOCYM7QQcVeOhMRLX5PXLeDKcdxP7s3x0LHG9t7a3nPbAbvYLRrhC7O2lLWzzMCpqjsw==}
+  '@aws-sdk/core@3.931.0':
+    resolution: {integrity: sha512-l/b6AQbto4TuXL2FIm7Z+tbVjrp0LN7ESm97Sf3nneB0vjKtB6R0TS/IySzCYMgyOC3Hxz+Ka34HJXZk9eXTFw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-env@3.930.0':
-    resolution: {integrity: sha512-5tJyxNQmm9C1XKeiWt/K67mUHtTiU2FxTkVsqVrzAMjNsF3uyA02kyTK70byh5n29oVR9XNValVEl6jk01ipYg==}
+  '@aws-sdk/credential-provider-env@3.931.0':
+    resolution: {integrity: sha512-dTNBpkKXyBdcpEjyfgkE/EFU/0NRoukLs+Pj0S8K1Dg216J9uIijpi6CaBBN+HvnaTlEItm2tzXiJpPVI+TqHQ==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-http@3.930.0':
-    resolution: {integrity: sha512-vw565GctpOPoRJyRvgqXM8U/4RG8wYEPfhe6GHvt9dchebw0OaFeW1mmSYpwEPkMhZs9Z808dkSPScwm8WZBKA==}
+  '@aws-sdk/credential-provider-http@3.931.0':
+    resolution: {integrity: sha512-7Ge26fhMDn51BTbHgopx5+uOl4I47k15BDzYc4YT6zyjS99uycYNCA7zB500DGTTn2HK27ZDTyAyhTKZGxRxbA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-ini@3.930.0':
-    resolution: {integrity: sha512-Ua4T5MWjm7QdHi7ZSUvnPBFwBZmLFP/IEGCLacPKbUT1sQO30hlWuB/uQOj0ns4T6p7V4XsM8bz5+xsW2yRYbQ==}
+  '@aws-sdk/credential-provider-ini@3.931.0':
+    resolution: {integrity: sha512-uzicpP7IHBxvAMjwGdmeke2bGTxjsKCSW7N48zuv0t0d56hmGHfcZIK5p4ry2OBJxzScp182OUAdAEG8wuSuuA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-node@3.930.0':
-    resolution: {integrity: sha512-LTx5G0PsL51hNCCzOIdacGPwqnTp3X2Ck8CjLL4Kz9FTR0mfY02qEJB5y5segU1hlge/WdQYxzBBMhtMUR2h8A==}
+  '@aws-sdk/credential-provider-node@3.931.0':
+    resolution: {integrity: sha512-eO8mfWNHz0dyYdVfPLVzmqXaSA3agZF/XvBO9/fRU90zCb8lKlXfgUmghGW7LhDkiv2v5uuizUiag7GsKoIcJw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-process@3.930.0':
-    resolution: {integrity: sha512-lqC4lepxgwR2uZp/JROTRjkHld4/FEpSgofmiIOAfUfDx0OWSg7nkWMMS/DzlMpODqATl9tO0DcvmIJ8tMbh6g==}
+  '@aws-sdk/credential-provider-process@3.931.0':
+    resolution: {integrity: sha512-8Mu9r+5BUKqmKSI/WYHl5o4GeoonEb51RmoLEqG6431Uz4Y8C6gzAT69yjOJ+MwoWQ2Os37OZLOTv7SgxyOgrQ==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-sso@3.930.0':
-    resolution: {integrity: sha512-LIs2aaVoFfioRokR1R9SpLS9u8CmbHhrV/gpHO1ED41qNCujn23vAxRNQmWzJ2XoCxSTwvToiHD2i6CjPA6rHQ==}
+  '@aws-sdk/credential-provider-sso@3.931.0':
+    resolution: {integrity: sha512-FP31lfMgNMDG4ZDX4NUZ+uoHWn76etcG8UWEgzZb4YOPV4M8a7gwU95iD+RBaK4lV3KvwH2tu68Hmne1qQpFqQ==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-web-identity@3.930.0':
-    resolution: {integrity: sha512-iIYF8GReLOp16yn2bnRWrc4UOW/vVLifqyRWZ3iAGe8NFzUiHBq+Nok7Edh+2D8zt30QOCOsWCZ31uRrPuXH8w==}
+  '@aws-sdk/credential-provider-web-identity@3.931.0':
+    resolution: {integrity: sha512-hfX0Buw2+ie0FBiSFMmnXfugQc9fO0KvEojnNnzhk4utlWjZobMcUprOQ/VKUueg0Kga1b1xu8gEP6g1aEh3zw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/lib-storage@3.930.0':
-    resolution: {integrity: sha512-x7m+frHKTh/OxFfCHDml+OKb5jxBy9Rex7hb80envAYzfo0vE4gPbs9PBcFh1GEC7+GDhBNMvhoiKUqlRKM3jQ==}
+  '@aws-sdk/lib-storage@3.931.0':
+    resolution: {integrity: sha512-CG6ZZIbsrWnYLy5avjMckwaGQ6D5gExEZoEBDzu8fPIsjBd7Nxo3FJvkbE7MuK2/E762pnpWKd9BZANkciRx3A==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      '@aws-sdk/client-s3': ^3.930.0
+      '@aws-sdk/client-s3': ^3.931.0
 
   '@aws-sdk/middleware-bucket-endpoint@3.930.0':
     resolution: {integrity: sha512-cnCLWeKPYgvV4yRYPFH6pWMdUByvu2cy2BAlfsPpvnm4RaVioztyvxmQj5PmVN5fvWs5w/2d6U7le8X9iye2sA==}
@@ -150,8 +150,8 @@ packages:
     resolution: {integrity: sha512-5HEQ+JU4DrLNWeY27wKg/jeVa8Suy62ivJHOSUf6e6hZdVIMx0h/kXS1fHEQNNiLu2IzSEP/bFXsKBaW7x7s0g==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/middleware-flexible-checksums@3.930.0':
-    resolution: {integrity: sha512-ZbAwwe7sqIO7tmNH3Q8rH91tZCQwBGliyXUbANoVMp1CWLPDAeaECurkmuBe/UJmoszi2U3gyhIQlbfzD2SBLw==}
+  '@aws-sdk/middleware-flexible-checksums@3.931.0':
+    resolution: {integrity: sha512-eYWwUKeEommCrrm0Ro6fGDwVO0x2bL3niOmSnHIlIdpu7ruzAGaphj+2MekCxaSPORzkZ3yheHUzV45D8Qj63A==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/middleware-host-header@3.930.0':
@@ -170,32 +170,32 @@ packages:
     resolution: {integrity: sha512-gv0sekNpa2MBsIhm2cjP3nmYSfI4nscx/+K9u9ybrWZBWUIC4kL2sV++bFjjUz4QxUIlvKByow3/a9ARQyCu7Q==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/middleware-sdk-s3@3.930.0':
-    resolution: {integrity: sha512-bnVK0xVVmrPyKTbV5MgG6KP7MPe87GngBPD5MrYj9kWmGrJIvnt0qer0UIgWAnsyCi7XrTfw7SMgYRpSxOYEMw==}
+  '@aws-sdk/middleware-sdk-s3@3.931.0':
+    resolution: {integrity: sha512-uWF78ht8Wgxljn6y0cEcIWfbeTVnJ0cE1Gha9ScCqscmuBCpHuFMSd/p53w3whoDhpQL3ln9mOyY3tfST/NUQA==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/middleware-ssec@3.930.0':
     resolution: {integrity: sha512-N2/SvodmaDS6h7CWfuapt3oJyn1T2CBz0CsDIiTDv9cSagXAVFjPdm2g4PFJqrNBeqdDIoYBnnta336HmamWHg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/middleware-user-agent@3.930.0':
-    resolution: {integrity: sha512-UUItqy02biaHoZDd1Z2CskFon3Lej15ZCIZzW4n2lsJmgLWNvz21jtFA8DQny7ZgCLAOOXI8YK3VLZptZWtIcg==}
+  '@aws-sdk/middleware-user-agent@3.931.0':
+    resolution: {integrity: sha512-Ftd+f3+y5KNYKzLXaGknwJ9hCkFWshi5C9TLLsz+fEohWc1FvIKU7MlXTeFms2eN76TTVHuG8N2otaujl6CuHg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/nested-clients@3.930.0':
-    resolution: {integrity: sha512-eEDjTVXNiDkoV0ZV+X+WV40GTpF70xZmDW13CQzQF7rzOC2iFjtTRU+F7MUhy/Vs+e9KvDgiuCDecITtaOXUNw==}
+  '@aws-sdk/nested-clients@3.931.0':
+    resolution: {integrity: sha512-6/dXrX2nWgiWdHxooEtmKpOErms4+79AQawEvhhxpLPpa+tixl4i/MSFgHk9sjkGv5a1/P3DbnedpZWl+2wMOg==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/region-config-resolver@3.930.0':
     resolution: {integrity: sha512-KL2JZqH6aYeQssu1g1KuWsReupdfOoxD6f1as2VC+rdwYFUu4LfzMsFfXnBvvQWWqQ7rZHWOw1T+o5gJmg7Dzw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/signature-v4-multi-region@3.930.0':
-    resolution: {integrity: sha512-UOAq1ftbrZc9HRP/nG970OONNykIDWunjth9GvGDODkW0FR7DHJWBmTwj61ZnrSiuSParp1eQfa+JsZ8eXNPcw==}
+  '@aws-sdk/signature-v4-multi-region@3.931.0':
+    resolution: {integrity: sha512-EGYYDSSk7k1xbSHtb8MfEMILf5achdNnnsYKgFk0+Oul3tPQ4xUmOt5qRP6sOO3/LQHF37gBYHUF9OSA/+uVCw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/token-providers@3.930.0':
-    resolution: {integrity: sha512-K+fJFJXA2Tdx10WhhTm+xQmf1WDHu14rUutByyqx6W0iW2rhtl3YeRr188LWSU3/hpz7BPyvigaAb0QyRti6FQ==}
+  '@aws-sdk/token-providers@3.931.0':
+    resolution: {integrity: sha512-dr+02X9oxqmXG0856odFJ7wAXy12pr/tq2Zg+IS0TDThFvgtvx4yChkpqmc89wGoW+Aly47JPfPUXh0IMpGzIg==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/types@3.930.0':
@@ -217,8 +217,8 @@ packages:
   '@aws-sdk/util-user-agent-browser@3.930.0':
     resolution: {integrity: sha512-q6lCRm6UAe+e1LguM5E4EqM9brQlDem4XDcQ87NzEvlTW6GzmNCO0w1jS0XgCFXQHjDxjdlNFX+5sRbHijwklg==}
 
-  '@aws-sdk/util-user-agent-node@3.930.0':
-    resolution: {integrity: sha512-tYc5uFKogn0vLukeZ6Zz2dR1/WiTjxZH7+Jjoce6aEYgRVfyrDje1POFb7YxhNZ7Pp1WzHCuwW2KgkmMoYVbxQ==}
+  '@aws-sdk/util-user-agent-node@3.931.0':
+    resolution: {integrity: sha512-j5if01rt7JCGYDVXck39V7IUyKAN73vKUPzmu+jp1apU3Q0lLSTZA/HCfL2HkMUKVLE67ibjKb+NCoEg0QhujA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       aws-crt: '>=1.0.0'
@@ -384,8 +384,8 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@babel/runtime@7.28.3':
-    resolution: {integrity: sha512-9uIQ10o0WGdpP6GDhXcdOJPJuDgFtIDtN/9+ArJQ2NAfAmiuhTQdzkaTGR33v43GYS2UrSA0eX2pPPHoFVvpxA==}
+  '@babel/runtime@7.28.4':
+    resolution: {integrity: sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.27.2':
@@ -598,16 +598,16 @@ packages:
   '@launchql/content-type-stream@2.3.2':
     resolution: {integrity: sha512-MljerTwu7qYuXkEZo/n2mirNF6L22ZHKgwKMTwo/ocMbhs5XdAJ3Dp766ni4fceNtHvv/qh1bL9B33cj9r+t8A==}
 
-  '@launchql/core@2.12.2':
-    resolution: {integrity: sha512-V+GjNLA1OE+XIhepN+lEOA7zzmPLnWLqetAwGlP5OGeumAkFvqi0RwGGSPxhT6896VROI9u7+94ARYdDtW3G5A==}
+  '@launchql/core@2.12.3':
+    resolution: {integrity: sha512-5jERiWLowompe+tmkraC0uZFS+jRhT4XiQXOY5KiT/cPbVuCp03vZ9TIJrcbFeKyxNN4E6vWqFgnifYhFrTFVg==}
     peerDependencies:
       '@pgsql/types': ^17.6.1
 
   '@launchql/env@2.4.5':
     resolution: {integrity: sha512-urOu1oqq7MbRpaVqnJo3tFwq09oxfC59rMMlAP+CU9TWtUQlyL9dMYX1uvYvAWgfeaJXbUKpiiQRNzZlz0kd9w==}
 
-  '@launchql/explorer@2.5.7':
-    resolution: {integrity: sha512-tNVLReKe6ovyP6h2Mbis1GEZm3+uokp0e7i7ZkR5K/l0Ie7/2QyjPdIpC5vZ1/YWKkcJadYC711ss4x5E8Pwdw==}
+  '@launchql/explorer@2.5.8':
+    resolution: {integrity: sha512-T3GZtXNkQKGJVmKn9Ntw/UDdVZO27Z6NFL0YIMsZ2ULcrsUX2x3Yvd3cMlA7XfO9B9azqK4VtHDOAl2A2C1urA==}
     hasBin: true
 
   '@launchql/logger@1.1.2':
@@ -619,8 +619,8 @@ packages:
   '@launchql/server-utils@2.4.5':
     resolution: {integrity: sha512-b2RHjK1kuGWIUICbgSaEu+LqO/XahflFfMiL0y1M1FI1ALdRs1tlknmycecxCEvEwWlkh3nDDQ2zV2wnG3OpMA==}
 
-  '@launchql/templatizer@2.4.0':
-    resolution: {integrity: sha512-tse90nK68tGdpNXu7AWxtzSJcBNRWoKbZNvMRJXPLudSVkJ9FKoJcH4eUFKTJAAI4UwRlhOLYEk3hrGXjeZXBA==}
+  '@launchql/templatizer@2.4.1':
+    resolution: {integrity: sha512-TXe8XRl/vIELcbKfI8UeeFsxDHHvLDItE0QikmO609him6z6f5H34O+BlOqCcisEwubfBk7AaTYCWLhKxQ0JqQ==}
 
   '@launchql/types@2.7.0':
     resolution: {integrity: sha512-20fP4xNDoCZHmJUbWumpbtDUcS2UaR7hUtivhFz0VTbY7eYtF/NHL+MUGnbTc+SAfmRGR52tpld42PQ8+mUgAw==}
@@ -1188,8 +1188,8 @@ packages:
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
 
-  '@types/pg@8.15.5':
-    resolution: {integrity: sha512-LF7lF6zWEKxuT3/OR8wAZGzkg4ENGXFNyiV/JeOt9z5B+0ZVwbql9McqX5c/WStFq1GaGso7H1AzP/qSzmlCKQ==}
+  '@types/pg@8.15.6':
+    resolution: {integrity: sha512-NoaMtzhxOrubeL/7UZuNTrejB4MPAJ0RpxZqXQf2qXuVlTPuG6Y8p4u9dKRaue4yjmC7ZhzVO2/Yyyn25znrPQ==}
 
   '@types/stack-utils@2.0.3':
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
@@ -2383,8 +2383,8 @@ packages:
     peerDependencies:
       graphql: '>=0.9 <0.14 || ^14.0.2 || ^15.4.0'
 
-  graphile-cache@1.3.6:
-    resolution: {integrity: sha512-/UL4OdbeJvcKEcginsyd3DJEWhiI0+ekadaZGkElfUZgvqTo7uxxbgnEn/4l0uXTEkRiME5agL5wTBEi96/P4w==}
+  graphile-cache@1.3.7:
+    resolution: {integrity: sha512-oGMHqnGT4nPqhf5elb4apTZVQTOphke4ZIuI6PQR+wB3B9QeBR23gOpcfD7yrosRTRgWF7eJ6cQng50KYaXiEA==}
 
   graphile-i18n@0.0.3:
     resolution: {integrity: sha512-D527lxWuzWkRCTLTugQIku9tKTMKHm+CtUXQtcJYXN2CfrFfHsyAOcWmkY3eWJ24VLygrxWaHfCXGaEecejhPg==}
@@ -2443,10 +2443,6 @@ packages:
 
   graphql@15.10.1:
     resolution: {integrity: sha512-BL/Xd/T9baO6NFzoMpiMD7YUZ62R6viR5tp/MULVEnbYJXZA//kRNW7J0j1w/wXArgL0sCxhDfK5dczSKn3+cg==}
-    engines: {node: '>= 10.x'}
-
-  graphql@15.5.2:
-    resolution: {integrity: sha512-dZjLPWNQqYv0dqV2RNbiFed0LtSp6yd4jchsDGnuhDKa9OQHJYCfovaOEvY91w9gqbYO7Se9LKDTl3xxYva/3w==}
     engines: {node: '>= 10.x'}
 
   handlebars@4.7.8:
@@ -2528,6 +2524,10 @@ packages:
 
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
+    engines: {node: '>=0.10.0'}
+
+  iconv-lite@0.7.0:
+    resolution: {integrity: sha512-cf6L2Ds3h57VVmkZe+Pn+5APsT7FpqJtEhhieDCvrE2MK5Qk9MyffgQyuxQTm6BChfeZNtcOLHp9IcWRVcIcBQ==}
     engines: {node: '>=0.10.0'}
 
   ieee754@1.2.1:
@@ -3547,23 +3547,22 @@ packages:
     resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
     engines: {node: '>=16 || 14 >=14.18'}
 
-  path-scurry@2.0.0:
-    resolution: {integrity: sha512-ypGJsmGtdXUOeM5u93TyeIEfEhM6s+ljAhrk5vAvSx8uyY/02OvrZnA0YNGUrPXfpJMgI1ODd3nwz8Npx4O4cg==}
+  path-scurry@2.0.1:
+    resolution: {integrity: sha512-oWyT4gICAu+kaA7QWk/jvCHWarMKNs6pXOGWKDTr7cw4IGcUbW+PeTfbaQiLGheFRpjo6O9J0PmyMfQPjH71oA==}
     engines: {node: 20 || >=22}
 
-  path-to-regexp@8.2.0:
-    resolution: {integrity: sha512-TdrF7fW9Rphjq4RjrW0Kp2AW0Ahwu9sRGTkS6bvDi0SCwZlEZYmcfDbEsTz8RVk0EHIS/Vd1bv3JhG+1xZuAyQ==}
-    engines: {node: '>=16'}
+  path-to-regexp@8.3.0:
+    resolution: {integrity: sha512-7jdwVIRtsP8MYpdXSwOS0YdD0Du+qOoF/AEPIt88PcCFrZCzx41oxku1jD88hZBwbNUIEfpqvuhjFaMAqMTWnA==}
 
   path-type@3.0.0:
     resolution: {integrity: sha512-T2ZUsdZFHgA3u4e5PfPbjd7HDDpxPnQb5jN0SrDsjNSuVXHJqtwTnWqG0B1jZrgmJ/7lj1EmVIByWt1gxGkWvg==}
     engines: {node: '>=4'}
 
-  pg-ast@2.3.1:
-    resolution: {integrity: sha512-lodfguVAd2S0PslmYBJm7dXp2w5/JTSdJrM0IiS3+0MeWtEs99c56525IDr6u1Ig+hJpsOLQV94gluy35tpb/w==}
+  pg-ast@2.3.2:
+    resolution: {integrity: sha512-P3tVQiM78U8/KEX3kNvp96OVUoqTtaIXaPaSi30JoQGfv7BYdQOg1L/6bCTjpYkuZ1XwDG8uOsAaxNFAzlX6lw==}
 
-  pg-cache@1.3.6:
-    resolution: {integrity: sha512-/c4sDOonIPD02RBZjY+xR9+3CmdnRHO2jGac3F+F0PPo3zbk2IzMPd+ejJERW3+u28mWhsRlW7T0CXg9U6Vl4w==}
+  pg-cache@1.3.7:
+    resolution: {integrity: sha512-biPG767zsWMkZGie+ZVc0IszNsQ3EvnyWXTDcf11evATZjsmSgzH274p2eoxAungUl3A+bZhq3+CuD5UB11sAQ==}
 
   pg-cloudflare@1.2.7:
     resolution: {integrity: sha512-YgCtzMH0ptvZJslLM1ffsY4EuGaU0cx4XSdXLRFae8bPP4dS5xL1tNB3k2o/N64cHJpwU7dxKli/nZ2lUa5fLg==}
@@ -3627,8 +3626,8 @@ packages:
   pgsql-parser@17.8.2:
     resolution: {integrity: sha512-/uHZL7mq3Bj23v/nDShb8gN8LwUKdejFii6IFBxRYRXxWlRrbsdky1KtevIxiVGasWZfI+E5t1//Wq+D3cVmAg==}
 
-  pgsql-test@2.12.0:
-    resolution: {integrity: sha512-LWtyZvUmEpy1VBs7MrrOmq8oRy44NgAGwMgfEwSTA1OJUNZghg1J+mcEG+Tmj/bBHTnDEZyMWtuQi7cBS+i0og==}
+  pgsql-test@2.12.1:
+    resolution: {integrity: sha512-+xDdPhF3VowMn0jHOQwS03UDtQq6nCfBmSfsgtu9PPmb4sk9MpsLaajVjRusIarl+6Le/SixkI9STQYkNkgxjA==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -3804,9 +3803,9 @@ packages:
     resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
     engines: {node: '>= 0.8'}
 
-  raw-body@3.0.0:
-    resolution: {integrity: sha512-RmkhL8CAyCRPXCE28MMH0z2PNWQBNk2Q09ZdxM9IOOXwxwZbN+qbWaatPkdkWIKL2ZVDImrN/pK5HTRz2PcS4g==}
-    engines: {node: '>= 0.8'}
+  raw-body@3.0.1:
+    resolution: {integrity: sha512-9G8cA+tuMS75+6G/TzW8OtLzmBDMo8p1JRxN5AZ+LAp8uxGA8V8GZm4GQ4/N5QNQEnLmg6SS7wyuSmbKepiKqA==}
+    engines: {node: '>= 0.10'}
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
@@ -4161,8 +4160,8 @@ packages:
     peerDependencies:
       graphql: '>=0.10.0'
 
-  supabase-test@0.0.14:
-    resolution: {integrity: sha512-8aYb73mqKsFzuSZLuh2Ry7vL8Bam+ID3dRV7t2v/hG9mNokEIknQF9YXKkogcZOX+q9sj8NHOJNW5gD7kRuBvw==}
+  supabase-test@0.0.15:
+    resolution: {integrity: sha512-5ojTQZ669L/E4qrJm9SK0OTDx6pdaKIrXeORKe2OQcH0cNXjb/YiqfHUnxCcENggvan0oJ7Y3atj+jd51bEhsw==}
 
   supports-color@2.0.0:
     resolution: {integrity: sha512-KKNVtd6pCYgPIKU4cp2733HWYCpplQhddZLBUryaAHou723x+FRzQ5Df824Fj+IyyuiQTRoub4SnIFfIcrp70g==}
@@ -4616,30 +4615,29 @@ snapshots:
       '@smithy/util-utf8': 2.3.0
       tslib: 2.8.1
 
-  '@aws-sdk/client-s3@3.930.0':
+  '@aws-sdk/client-s3@3.931.0':
     dependencies:
       '@aws-crypto/sha1-browser': 5.2.0
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/core': 3.930.0
-      '@aws-sdk/credential-provider-node': 3.930.0
+      '@aws-sdk/core': 3.931.0
+      '@aws-sdk/credential-provider-node': 3.931.0
       '@aws-sdk/middleware-bucket-endpoint': 3.930.0
       '@aws-sdk/middleware-expect-continue': 3.930.0
-      '@aws-sdk/middleware-flexible-checksums': 3.930.0
+      '@aws-sdk/middleware-flexible-checksums': 3.931.0
       '@aws-sdk/middleware-host-header': 3.930.0
       '@aws-sdk/middleware-location-constraint': 3.930.0
       '@aws-sdk/middleware-logger': 3.930.0
       '@aws-sdk/middleware-recursion-detection': 3.930.0
-      '@aws-sdk/middleware-sdk-s3': 3.930.0
+      '@aws-sdk/middleware-sdk-s3': 3.931.0
       '@aws-sdk/middleware-ssec': 3.930.0
-      '@aws-sdk/middleware-user-agent': 3.930.0
+      '@aws-sdk/middleware-user-agent': 3.931.0
       '@aws-sdk/region-config-resolver': 3.930.0
-      '@aws-sdk/signature-v4-multi-region': 3.930.0
+      '@aws-sdk/signature-v4-multi-region': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@aws-sdk/util-endpoints': 3.930.0
       '@aws-sdk/util-user-agent-browser': 3.930.0
-      '@aws-sdk/util-user-agent-node': 3.930.0
-      '@aws-sdk/xml-builder': 3.930.0
+      '@aws-sdk/util-user-agent-node': 3.931.0
       '@smithy/config-resolver': 4.4.3
       '@smithy/core': 3.18.3
       '@smithy/eventstream-serde-browser': 4.2.5
@@ -4673,25 +4671,24 @@ snapshots:
       '@smithy/util-stream': 4.5.6
       '@smithy/util-utf8': 4.2.0
       '@smithy/util-waiter': 4.2.5
-      '@smithy/uuid': 1.1.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/client-sso@3.930.0':
+  '@aws-sdk/client-sso@3.931.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/core': 3.930.0
+      '@aws-sdk/core': 3.931.0
       '@aws-sdk/middleware-host-header': 3.930.0
       '@aws-sdk/middleware-logger': 3.930.0
       '@aws-sdk/middleware-recursion-detection': 3.930.0
-      '@aws-sdk/middleware-user-agent': 3.930.0
+      '@aws-sdk/middleware-user-agent': 3.931.0
       '@aws-sdk/region-config-resolver': 3.930.0
       '@aws-sdk/types': 3.930.0
       '@aws-sdk/util-endpoints': 3.930.0
       '@aws-sdk/util-user-agent-browser': 3.930.0
-      '@aws-sdk/util-user-agent-node': 3.930.0
+      '@aws-sdk/util-user-agent-node': 3.931.0
       '@smithy/config-resolver': 4.4.3
       '@smithy/core': 3.18.3
       '@smithy/fetch-http-handler': 5.3.6
@@ -4721,7 +4718,7 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/core@3.930.0':
+  '@aws-sdk/core@3.931.0':
     dependencies:
       '@aws-sdk/types': 3.930.0
       '@aws-sdk/xml-builder': 3.930.0
@@ -4737,17 +4734,17 @@ snapshots:
       '@smithy/util-utf8': 4.2.0
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-env@3.930.0':
+  '@aws-sdk/credential-provider-env@3.931.0':
     dependencies:
-      '@aws-sdk/core': 3.930.0
+      '@aws-sdk/core': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@smithy/property-provider': 4.2.5
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-http@3.930.0':
+  '@aws-sdk/credential-provider-http@3.931.0':
     dependencies:
-      '@aws-sdk/core': 3.930.0
+      '@aws-sdk/core': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@smithy/fetch-http-handler': 5.3.6
       '@smithy/node-http-handler': 4.4.5
@@ -4758,15 +4755,15 @@ snapshots:
       '@smithy/util-stream': 4.5.6
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-ini@3.930.0':
+  '@aws-sdk/credential-provider-ini@3.931.0':
     dependencies:
-      '@aws-sdk/core': 3.930.0
-      '@aws-sdk/credential-provider-env': 3.930.0
-      '@aws-sdk/credential-provider-http': 3.930.0
-      '@aws-sdk/credential-provider-process': 3.930.0
-      '@aws-sdk/credential-provider-sso': 3.930.0
-      '@aws-sdk/credential-provider-web-identity': 3.930.0
-      '@aws-sdk/nested-clients': 3.930.0
+      '@aws-sdk/core': 3.931.0
+      '@aws-sdk/credential-provider-env': 3.931.0
+      '@aws-sdk/credential-provider-http': 3.931.0
+      '@aws-sdk/credential-provider-process': 3.931.0
+      '@aws-sdk/credential-provider-sso': 3.931.0
+      '@aws-sdk/credential-provider-web-identity': 3.931.0
+      '@aws-sdk/nested-clients': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@smithy/credential-provider-imds': 4.2.5
       '@smithy/property-provider': 4.2.5
@@ -4776,14 +4773,14 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-node@3.930.0':
+  '@aws-sdk/credential-provider-node@3.931.0':
     dependencies:
-      '@aws-sdk/credential-provider-env': 3.930.0
-      '@aws-sdk/credential-provider-http': 3.930.0
-      '@aws-sdk/credential-provider-ini': 3.930.0
-      '@aws-sdk/credential-provider-process': 3.930.0
-      '@aws-sdk/credential-provider-sso': 3.930.0
-      '@aws-sdk/credential-provider-web-identity': 3.930.0
+      '@aws-sdk/credential-provider-env': 3.931.0
+      '@aws-sdk/credential-provider-http': 3.931.0
+      '@aws-sdk/credential-provider-ini': 3.931.0
+      '@aws-sdk/credential-provider-process': 3.931.0
+      '@aws-sdk/credential-provider-sso': 3.931.0
+      '@aws-sdk/credential-provider-web-identity': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@smithy/credential-provider-imds': 4.2.5
       '@smithy/property-provider': 4.2.5
@@ -4793,32 +4790,20 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-process@3.930.0':
+  '@aws-sdk/credential-provider-process@3.931.0':
     dependencies:
-      '@aws-sdk/core': 3.930.0
+      '@aws-sdk/core': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@smithy/property-provider': 4.2.5
       '@smithy/shared-ini-file-loader': 4.4.0
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-sso@3.930.0':
+  '@aws-sdk/credential-provider-sso@3.931.0':
     dependencies:
-      '@aws-sdk/client-sso': 3.930.0
-      '@aws-sdk/core': 3.930.0
-      '@aws-sdk/token-providers': 3.930.0
-      '@aws-sdk/types': 3.930.0
-      '@smithy/property-provider': 4.2.5
-      '@smithy/shared-ini-file-loader': 4.4.0
-      '@smithy/types': 4.9.0
-      tslib: 2.8.1
-    transitivePeerDependencies:
-      - aws-crt
-
-  '@aws-sdk/credential-provider-web-identity@3.930.0':
-    dependencies:
-      '@aws-sdk/core': 3.930.0
-      '@aws-sdk/nested-clients': 3.930.0
+      '@aws-sdk/client-sso': 3.931.0
+      '@aws-sdk/core': 3.931.0
+      '@aws-sdk/token-providers': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@smithy/property-provider': 4.2.5
       '@smithy/shared-ini-file-loader': 4.4.0
@@ -4827,9 +4812,21 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/lib-storage@3.930.0(@aws-sdk/client-s3@3.930.0)':
+  '@aws-sdk/credential-provider-web-identity@3.931.0':
     dependencies:
-      '@aws-sdk/client-s3': 3.930.0
+      '@aws-sdk/core': 3.931.0
+      '@aws-sdk/nested-clients': 3.931.0
+      '@aws-sdk/types': 3.930.0
+      '@smithy/property-provider': 4.2.5
+      '@smithy/shared-ini-file-loader': 4.4.0
+      '@smithy/types': 4.9.0
+      tslib: 2.8.1
+    transitivePeerDependencies:
+      - aws-crt
+
+  '@aws-sdk/lib-storage@3.931.0(@aws-sdk/client-s3@3.931.0)':
+    dependencies:
+      '@aws-sdk/client-s3': 3.931.0
       '@smithy/abort-controller': 4.2.5
       '@smithy/middleware-endpoint': 4.3.10
       '@smithy/smithy-client': 4.9.6
@@ -4855,12 +4852,12 @@ snapshots:
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/middleware-flexible-checksums@3.930.0':
+  '@aws-sdk/middleware-flexible-checksums@3.931.0':
     dependencies:
       '@aws-crypto/crc32': 5.2.0
       '@aws-crypto/crc32c': 5.2.0
       '@aws-crypto/util': 5.2.0
-      '@aws-sdk/core': 3.930.0
+      '@aws-sdk/core': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@smithy/is-array-buffer': 4.2.0
       '@smithy/node-config-provider': 4.3.5
@@ -4898,9 +4895,9 @@ snapshots:
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/middleware-sdk-s3@3.930.0':
+  '@aws-sdk/middleware-sdk-s3@3.931.0':
     dependencies:
-      '@aws-sdk/core': 3.930.0
+      '@aws-sdk/core': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@aws-sdk/util-arn-parser': 3.893.0
       '@smithy/core': 3.18.3
@@ -4921,9 +4918,9 @@ snapshots:
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/middleware-user-agent@3.930.0':
+  '@aws-sdk/middleware-user-agent@3.931.0':
     dependencies:
-      '@aws-sdk/core': 3.930.0
+      '@aws-sdk/core': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@aws-sdk/util-endpoints': 3.930.0
       '@smithy/core': 3.18.3
@@ -4931,20 +4928,20 @@ snapshots:
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/nested-clients@3.930.0':
+  '@aws-sdk/nested-clients@3.931.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/core': 3.930.0
+      '@aws-sdk/core': 3.931.0
       '@aws-sdk/middleware-host-header': 3.930.0
       '@aws-sdk/middleware-logger': 3.930.0
       '@aws-sdk/middleware-recursion-detection': 3.930.0
-      '@aws-sdk/middleware-user-agent': 3.930.0
+      '@aws-sdk/middleware-user-agent': 3.931.0
       '@aws-sdk/region-config-resolver': 3.930.0
       '@aws-sdk/types': 3.930.0
       '@aws-sdk/util-endpoints': 3.930.0
       '@aws-sdk/util-user-agent-browser': 3.930.0
-      '@aws-sdk/util-user-agent-node': 3.930.0
+      '@aws-sdk/util-user-agent-node': 3.931.0
       '@smithy/config-resolver': 4.4.3
       '@smithy/core': 3.18.3
       '@smithy/fetch-http-handler': 5.3.6
@@ -4982,19 +4979,19 @@ snapshots:
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/signature-v4-multi-region@3.930.0':
+  '@aws-sdk/signature-v4-multi-region@3.931.0':
     dependencies:
-      '@aws-sdk/middleware-sdk-s3': 3.930.0
+      '@aws-sdk/middleware-sdk-s3': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@smithy/protocol-http': 5.3.5
       '@smithy/signature-v4': 5.3.5
       '@smithy/types': 4.9.0
       tslib: 2.8.1
 
-  '@aws-sdk/token-providers@3.930.0':
+  '@aws-sdk/token-providers@3.931.0':
     dependencies:
-      '@aws-sdk/core': 3.930.0
-      '@aws-sdk/nested-clients': 3.930.0
+      '@aws-sdk/core': 3.931.0
+      '@aws-sdk/nested-clients': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@smithy/property-provider': 4.2.5
       '@smithy/shared-ini-file-loader': 4.4.0
@@ -5031,9 +5028,9 @@ snapshots:
       bowser: 2.12.1
       tslib: 2.8.1
 
-  '@aws-sdk/util-user-agent-node@3.930.0':
+  '@aws-sdk/util-user-agent-node@3.931.0':
     dependencies:
-      '@aws-sdk/middleware-user-agent': 3.930.0
+      '@aws-sdk/middleware-user-agent': 3.931.0
       '@aws-sdk/types': 3.930.0
       '@smithy/node-config-provider': 4.3.5
       '@smithy/types': 4.9.0
@@ -5211,7 +5208,7 @@ snapshots:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/runtime@7.28.3': {}
+  '@babel/runtime@7.28.4': {}
 
   '@babel/template@7.27.2':
     dependencies:
@@ -5541,14 +5538,14 @@ snapshots:
       mime-bytes: 0.3.2
       uuid-hash: 2.2.2
 
-  '@launchql/core@2.12.2(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))':
+  '@launchql/core@2.12.3(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))':
     dependencies:
-      '@launchql/env': 2.4.5(graphql@15.5.2)
-      '@launchql/explorer': 2.5.7(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))
+      '@launchql/env': 2.4.5(graphql@15.10.1)
+      '@launchql/explorer': 2.5.8(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))
       '@launchql/logger': 1.1.2
-      '@launchql/server-utils': 2.4.5(graphql@15.5.2)
-      '@launchql/templatizer': 2.4.0
-      '@launchql/types': 2.7.0(graphql@15.5.2)
+      '@launchql/server-utils': 2.4.5(graphql@15.10.1)
+      '@launchql/templatizer': 2.4.1
+      '@launchql/types': 2.7.0(graphql@15.10.1)
       '@pgsql/types': 17.6.1
       case: 1.6.3
       chalk: 4.1.2
@@ -5556,7 +5553,7 @@ snapshots:
       glob: 11.0.3
       parse-package-name: 1.0.0
       pg: 8.16.3
-      pg-cache: 1.3.6(graphql@15.5.2)
+      pg-cache: 1.3.7(graphql@15.10.1)
       pg-env: 1.1.1
       pgsql-deparser: 17.11.1
       pgsql-parser: 17.8.2
@@ -5573,9 +5570,9 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@launchql/env@2.4.5(graphql@15.5.2)':
+  '@launchql/env@2.4.5(graphql@15.10.1)':
     dependencies:
-      '@launchql/types': 2.7.0(graphql@15.5.2)
+      '@launchql/types': 2.7.0(graphql@15.10.1)
       deepmerge: 4.3.1
     transitivePeerDependencies:
       - bufferutil
@@ -5584,20 +5581,20 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@launchql/explorer@2.5.7(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))':
+  '@launchql/explorer@2.5.8(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))':
     dependencies:
-      '@launchql/env': 2.4.5(graphql@15.5.2)
-      '@launchql/s3-streamer': 2.5.5(graphql@15.5.2)
-      '@launchql/server-utils': 2.4.5(graphql@15.5.2)
-      '@launchql/types': 2.7.0(graphql@15.5.2)
+      '@launchql/env': 2.4.5(graphql@15.10.1)
+      '@launchql/s3-streamer': 2.5.5(graphql@15.10.1)
+      '@launchql/server-utils': 2.4.5(graphql@15.10.1)
+      '@launchql/types': 2.7.0(graphql@15.10.1)
       '@launchql/upload-names': 2.2.2
       '@launchql/url-domains': 2.2.2
       express: 5.1.0
-      graphile-build: 4.14.1(graphql@15.5.2)
-      graphile-cache: 1.3.6(graphql@15.5.2)
-      graphile-settings: 2.5.6(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))
-      graphql-upload: 13.0.0(graphql@15.5.2)
-      pg-cache: 1.3.6(graphql@15.5.2)
+      graphile-build: 4.14.1(graphql@15.10.1)
+      graphile-cache: 1.3.7(graphql@15.10.1)
+      graphile-settings: 2.5.6(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))
+      graphql-upload: 13.0.0(graphql@15.10.1)
+      pg-cache: 1.3.7(graphql@15.10.1)
       pg-env: 1.1.1
       postgraphile: 4.14.1
     transitivePeerDependencies:
@@ -5615,12 +5612,12 @@ snapshots:
     dependencies:
       chalk: 4.1.2
 
-  '@launchql/s3-streamer@2.5.5(graphql@15.5.2)':
+  '@launchql/s3-streamer@2.5.5(graphql@15.10.1)':
     dependencies:
-      '@aws-sdk/client-s3': 3.930.0
-      '@aws-sdk/lib-storage': 3.930.0(@aws-sdk/client-s3@3.930.0)
+      '@aws-sdk/client-s3': 3.931.0
+      '@aws-sdk/lib-storage': 3.931.0(@aws-sdk/client-s3@3.931.0)
       '@launchql/content-type-stream': 2.3.2
-      '@launchql/types': 2.7.0(graphql@15.5.2)
+      '@launchql/types': 2.7.0(graphql@15.10.1)
     transitivePeerDependencies:
       - aws-crt
       - bufferutil
@@ -5629,10 +5626,10 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@launchql/server-utils@2.4.5(graphql@15.5.2)':
+  '@launchql/server-utils@2.4.5(graphql@15.10.1)':
     dependencies:
       '@launchql/logger': 1.1.2
-      '@launchql/types': 2.7.0(graphql@15.5.2)
+      '@launchql/types': 2.7.0(graphql@15.10.1)
       cors: 2.8.5
       express: 5.1.0
       lru-cache: 11.2.2
@@ -5643,16 +5640,16 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@launchql/templatizer@2.4.0':
+  '@launchql/templatizer@2.4.1':
     dependencies:
       case: 1.6.3
       glob: 11.0.3
       rimraf: 6.1.0
 
-  '@launchql/types@2.7.0(graphql@15.5.2)':
+  '@launchql/types@2.7.0(graphql@15.10.1)':
     dependencies:
       deepmerge: 4.3.1
-      graphile-build: 4.14.1(graphql@15.5.2)
+      graphile-build: 4.14.1(graphql@15.10.1)
       pg-env: 1.1.1
       postgraphile: 4.14.1
     transitivePeerDependencies:
@@ -6016,24 +6013,24 @@ snapshots:
   '@pyramation/args@0.0.4(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/runtime': 7.28.3
+      '@babel/runtime': 7.28.4
 
-  '@pyramation/postgis@0.1.1(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.5.2))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))':
+  '@pyramation/postgis@0.1.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))':
     dependencies:
       debug: 4.4.3
-      graphile-build: 4.14.1(graphql@15.5.2)
-      graphile-build-pg: 4.14.1(graphql@15.5.2)(pg@8.16.3)
-      graphql: 15.5.2
+      graphile-build: 4.14.1(graphql@15.10.1)
+      graphile-build-pg: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphql: 15.10.1
       pg-sql2: 4.14.1(pg@8.16.3)
       tslib: 1.14.1
     transitivePeerDependencies:
       - supports-color
 
-  '@pyramation/postgraphile-plugin-fulltext-filter@2.0.0(graphql@15.5.2)(pg@8.16.3)(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))(postgraphile-plugin-connection-filter@2.3.0)':
+  '@pyramation/postgraphile-plugin-fulltext-filter@2.0.0(graphql@15.10.1)(pg@8.16.3)(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))(postgraphile-plugin-connection-filter@2.3.0)':
     dependencies:
-      graphile-build-pg: 4.14.1(graphql@15.5.2)(pg@8.16.3)
+      graphile-build-pg: 4.14.1(graphql@15.10.1)(pg@8.16.3)
       pg-tsquery: 8.4.2
-      postgraphile-core: 4.14.1(graphql@15.5.2)(pg@8.16.3)
+      postgraphile-core: 4.14.1(graphql@15.10.1)(pg@8.16.3)
       postgraphile-plugin-connection-filter: 2.3.0
     transitivePeerDependencies:
       - graphql
@@ -6043,7 +6040,7 @@ snapshots:
   '@pyramation/prompt@0.0.1(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
-      '@babel/runtime': 7.28.3
+      '@babel/runtime': 7.28.4
       '@pyramation/args': 0.0.4(@babel/core@7.28.0)
       colors: 1.4.0
       inquirer: 6.5.2
@@ -6516,7 +6513,7 @@ snapshots:
 
   '@types/normalize-package-data@2.4.4': {}
 
-  '@types/pg@8.15.5':
+  '@types/pg@8.15.6':
     dependencies:
       '@types/node': 22.17.1
       pg-protocol: 1.10.3
@@ -6851,7 +6848,7 @@ snapshots:
       iconv-lite: 0.6.3
       on-finished: 2.4.1
       qs: 6.14.0
-      raw-body: 3.0.0
+      raw-body: 3.0.1
       type-is: 2.0.1
     transitivePeerDependencies:
       - supports-color
@@ -7200,7 +7197,7 @@ snapshots:
       '@pyramation/prompt': 0.0.1(@babel/core@7.28.0)
       csv-parser: 2.3.5
       js-yaml: 3.14.1
-      pg-ast: 2.3.1
+      pg-ast: 2.3.2
       pgsql-deparser: 1.3.1
     transitivePeerDependencies:
       - '@babel/core'
@@ -7765,7 +7762,7 @@ snapshots:
       minimatch: 10.1.1
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
-      path-scurry: 2.0.0
+      path-scurry: 2.0.1
 
   glob@7.2.3:
     dependencies:
@@ -7791,12 +7788,12 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3):
+  graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3):
     dependencies:
       '@graphile/lru': 4.11.0
       chalk: 2.4.2
       debug: 4.4.3
-      graphile-build: 4.14.1(graphql@15.5.2)
+      graphile-build: 4.14.1(graphql@15.10.1)
       jsonwebtoken: 9.0.2
       lodash: 4.17.21
       lru-cache: 4.1.5
@@ -7806,13 +7803,13 @@ snapshots:
       - graphql
       - supports-color
 
-  graphile-build@4.14.1(graphql@15.5.2):
+  graphile-build@4.14.1(graphql@15.10.1):
     dependencies:
       '@graphile/lru': 4.11.0
       chalk: 2.4.2
       debug: 4.4.3
-      graphql: 15.5.2
-      graphql-parse-resolve-info: 4.14.1(graphql@15.5.2)
+      graphql: 15.10.1
+      graphql-parse-resolve-info: 4.14.1(graphql@15.10.1)
       iterall: 1.3.0
       lodash: 4.17.21
       lru-cache: 5.1.1
@@ -7821,12 +7818,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  graphile-cache@1.3.6(graphql@15.5.2):
+  graphile-cache@1.3.7(graphql@15.10.1):
     dependencies:
       '@launchql/logger': 1.1.2
       lru-cache: 11.2.2
       pg: 8.16.3
-      pg-cache: 1.3.6(graphql@15.5.2)
+      pg-cache: 1.3.7(graphql@15.10.1)
       postgraphile: 4.14.1
     transitivePeerDependencies:
       - bufferutil
@@ -7835,23 +7832,23 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  graphile-i18n@0.0.3(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2):
+  graphile-i18n@0.0.3(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1):
     dependencies:
-      '@babel/runtime': 7.28.3
+      '@babel/runtime': 7.28.4
       accept-language-parser: 1.5.0
       dataloader: 2.2.3
       envalid: 6.0.2
-      graphile-build: 4.14.1(graphql@15.5.2)
-      graphile-utils: 4.14.1(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.5.2))
+      graphile-build: 4.14.1(graphql@15.10.1)
+      graphile-utils: 4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
     transitivePeerDependencies:
       - graphile-build-pg
       - graphql
       - supports-color
 
-  graphile-meta-schema@0.2.5(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.5.2)):
+  graphile-meta-schema@0.2.5(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1)):
     dependencies:
-      '@babel/runtime': 7.28.3
-      graphile-utils: 4.14.1(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.5.2))
+      '@babel/runtime': 7.28.4
+      graphile-utils: 4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
     transitivePeerDependencies:
       - graphile-build
       - graphile-build-pg
@@ -7870,31 +7867,31 @@ snapshots:
 
   graphile-search-plugin@0.1.2:
     dependencies:
-      '@babel/runtime': 7.28.3
+      '@babel/runtime': 7.28.4
 
-  graphile-settings@2.5.6(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3)):
+  graphile-settings@2.5.6(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3)):
     dependencies:
       '@graphile-contrib/pg-many-to-many': 1.0.2
-      '@launchql/env': 2.4.5(graphql@15.5.2)
-      '@launchql/s3-streamer': 2.5.5(graphql@15.5.2)
-      '@launchql/types': 2.7.0(graphql@15.5.2)
+      '@launchql/env': 2.4.5(graphql@15.10.1)
+      '@launchql/s3-streamer': 2.5.5(graphql@15.10.1)
+      '@launchql/types': 2.7.0(graphql@15.10.1)
       '@launchql/upload-names': 2.2.2
-      '@pyramation/postgis': 0.1.1(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.5.2))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))
-      '@pyramation/postgraphile-plugin-fulltext-filter': 2.0.0(graphql@15.5.2)(pg@8.16.3)(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))(postgraphile-plugin-connection-filter@2.3.0)
+      '@pyramation/postgis': 0.1.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))
+      '@pyramation/postgraphile-plugin-fulltext-filter': 2.0.0(graphql@15.10.1)(pg@8.16.3)(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))(postgraphile-plugin-connection-filter@2.3.0)
       cors: 2.8.5
       express: 5.1.0
-      graphile-build: 4.14.1(graphql@15.5.2)
-      graphile-i18n: 0.0.3(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)
-      graphile-meta-schema: 0.2.5(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.5.2))
+      graphile-build: 4.14.1(graphql@15.10.1)
+      graphile-i18n: 0.0.3(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)
+      graphile-meta-schema: 0.2.5(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
       graphile-query: 2.3.2
       graphile-search-plugin: 0.1.2
       graphile-simple-inflector: 0.1.1
-      graphql-tag: 2.12.6(graphql@15.5.2)
-      graphql-upload: 13.0.0(graphql@15.5.2)
+      graphql-tag: 2.12.6(graphql@15.10.1)
+      graphql-upload: 13.0.0(graphql@15.10.1)
       lru-cache: 11.2.2
       pg: 8.16.3
       postgraphile: 4.14.1
-      postgraphile-derived-upload-field: 0.0.6(graphql@15.5.2)
+      postgraphile-derived-upload-field: 0.0.6(graphql@15.10.1)
       postgraphile-plugin-connection-filter: 2.3.0
       postgraphile-plugin-connection-filter-postgis: 1.0.0-alpha.6
       request-ip: 3.3.0
@@ -7911,55 +7908,53 @@ snapshots:
 
   graphile-simple-inflector@0.1.1:
     dependencies:
-      '@babel/runtime': 7.28.3
+      '@babel/runtime': 7.28.4
 
-  graphile-utils@4.14.1(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.5.2)):
+  graphile-utils@4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1)):
     dependencies:
       debug: 4.4.3
-      graphile-build: 4.14.1(graphql@15.5.2)
-      graphile-build-pg: 4.14.1(graphql@15.5.2)(pg@8.16.3)
-      graphql: 15.5.2
+      graphile-build: 4.14.1(graphql@15.10.1)
+      graphile-build-pg: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphql: 15.10.1
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
 
-  graphql-parse-resolve-info@4.14.1(graphql@15.5.2):
+  graphql-parse-resolve-info@4.14.1(graphql@15.10.1):
     dependencies:
       debug: 4.4.3
-      graphql: 15.5.2
+      graphql: 15.10.1
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
 
-  graphql-tag@2.12.6(graphql@15.5.2):
+  graphql-tag@2.12.6(graphql@15.10.1):
     dependencies:
-      graphql: 15.5.2
+      graphql: 15.10.1
       tslib: 2.8.1
 
-  graphql-upload@11.0.0(graphql@15.5.2):
+  graphql-upload@11.0.0(graphql@15.10.1):
     dependencies:
       busboy: 0.3.1
       fs-capacitor: 6.2.0
-      graphql: 15.5.2
+      graphql: 15.10.1
       http-errors: 1.8.1
       isobject: 4.0.0
       object-path: 0.11.8
 
-  graphql-upload@13.0.0(graphql@15.5.2):
+  graphql-upload@13.0.0(graphql@15.10.1):
     dependencies:
       busboy: 0.3.1
       fs-capacitor: 6.2.0
-      graphql: 15.5.2
+      graphql: 15.10.1
       http-errors: 1.8.1
       object-path: 0.11.8
 
-  graphql-ws@5.16.2(graphql@15.5.2):
+  graphql-ws@5.16.2(graphql@15.10.1):
     dependencies:
-      graphql: 15.5.2
+      graphql: 15.10.1
 
   graphql@15.10.1: {}
-
-  graphql@15.5.2: {}
 
   handlebars@4.7.8:
     dependencies:
@@ -8043,6 +8038,10 @@ snapshots:
       safer-buffer: 2.1.2
 
   iconv-lite@0.6.3:
+    dependencies:
+      safer-buffer: 2.1.2
+
+  iconv-lite@0.7.0:
     dependencies:
       safer-buffer: 2.1.2
 
@@ -9417,26 +9416,26 @@ snapshots:
       lru-cache: 10.4.3
       minipass: 7.1.2
 
-  path-scurry@2.0.0:
+  path-scurry@2.0.1:
     dependencies:
       lru-cache: 11.2.2
       minipass: 7.1.2
 
-  path-to-regexp@8.2.0: {}
+  path-to-regexp@8.3.0: {}
 
   path-type@3.0.0:
     dependencies:
       pify: 3.0.0
 
-  pg-ast@2.3.1:
+  pg-ast@2.3.2:
     dependencies:
       '@pgsql/types': 17.6.1
       nested-obj: 0.0.1
 
-  pg-cache@1.3.6(graphql@15.5.2):
+  pg-cache@1.3.7(graphql@15.10.1):
     dependencies:
       '@launchql/logger': 1.1.2
-      '@launchql/types': 2.7.0(graphql@15.5.2)
+      '@launchql/types': 2.7.0(graphql@15.10.1)
       lru-cache: 11.2.2
       pg: 8.16.3
       pg-env: 1.1.1
@@ -9469,7 +9468,7 @@ snapshots:
   pg-sql2@4.14.1(pg@8.16.3):
     dependencies:
       '@graphile/lru': 4.11.0
-      '@types/pg': 8.15.5
+      '@types/pg': 8.15.6
       debug: 4.4.3
       pg: 8.16.3
       tslib: 2.8.1
@@ -9502,7 +9501,7 @@ snapshots:
 
   pgsql-deparser@1.3.1:
     dependencies:
-      '@babel/runtime': 7.28.3
+      '@babel/runtime': 7.28.4
       dotty: 0.1.0
       lodash: 4.17.20
       pgsql-enums: 1.1.1
@@ -9513,7 +9512,7 @@ snapshots:
 
   pgsql-enums@1.1.1:
     dependencies:
-      '@babel/runtime': 7.28.3
+      '@babel/runtime': 7.28.4
 
   pgsql-parser@17.8.2:
     dependencies:
@@ -9521,16 +9520,16 @@ snapshots:
       libpg-query: 17.6.0
       pgsql-deparser: 17.11.1
 
-  pgsql-test@2.12.0(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3)):
+  pgsql-test@2.12.1(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3)):
     dependencies:
-      '@launchql/core': 2.12.2(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))
-      '@launchql/env': 2.4.5(graphql@15.5.2)
+      '@launchql/core': 2.12.3(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))
+      '@launchql/env': 2.4.5(graphql@15.10.1)
       '@launchql/logger': 1.1.2
-      '@launchql/server-utils': 2.4.5(graphql@15.5.2)
-      '@launchql/types': 2.7.0(graphql@15.5.2)
+      '@launchql/server-utils': 2.4.5(graphql@15.10.1)
+      '@launchql/types': 2.7.0(graphql@15.10.1)
       csv-parse: 5.6.0
       pg: 8.16.3
-      pg-cache: 1.3.6(graphql@15.5.2)
+      pg-cache: 1.3.7(graphql@15.10.1)
       pg-copy-streams: 6.0.6
       pg-env: 1.1.1
     transitivePeerDependencies:
@@ -9573,20 +9572,20 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3):
+  postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3):
     dependencies:
-      graphile-build: 4.14.1(graphql@15.5.2)
-      graphile-build-pg: 4.14.1(graphql@15.5.2)(pg@8.16.3)
-      graphql: 15.5.2
+      graphile-build: 4.14.1(graphql@15.10.1)
+      graphile-build-pg: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphql: 15.10.1
       pg: 8.16.3
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
 
-  postgraphile-derived-upload-field@0.0.6(graphql@15.5.2):
+  postgraphile-derived-upload-field@0.0.6(graphql@15.10.1):
     dependencies:
-      '@babel/runtime': 7.28.3
-      graphql-upload: 11.0.0(graphql@15.5.2)
+      '@babel/runtime': 7.28.4
+      graphql-upload: 11.0.0(graphql@15.10.1)
     transitivePeerDependencies:
       - graphql
 
@@ -9601,18 +9600,18 @@ snapshots:
       '@graphile/lru': 4.11.0
       '@types/json5': 0.0.30
       '@types/jsonwebtoken': 9.0.10
-      '@types/pg': 8.15.5
+      '@types/pg': 8.15.6
       '@types/ws': 7.4.7
       body-parser: 1.20.3
       chalk: 2.4.2
       commander: 2.20.3
       debug: 4.4.3
       finalhandler: 1.3.1
-      graphile-build: 4.14.1(graphql@15.5.2)
-      graphile-build-pg: 4.14.1(graphql@15.5.2)(pg@8.16.3)
-      graphile-utils: 4.14.1(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.5.2))
-      graphql: 15.5.2
-      graphql-ws: 5.16.2(graphql@15.5.2)
+      graphile-build: 4.14.1(graphql@15.10.1)
+      graphile-build-pg: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      graphile-utils: 4.14.1(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphile-build@4.14.1(graphql@15.10.1))
+      graphql: 15.10.1
+      graphql-ws: 5.16.2(graphql@15.10.1)
       http-errors: 1.8.1
       iterall: 1.3.0
       json5: 2.2.3
@@ -9621,8 +9620,8 @@ snapshots:
       pg: 8.16.3
       pg-connection-string: 2.9.1
       pg-sql2: 4.14.1(pg@8.16.3)
-      postgraphile-core: 4.14.1(graphql@15.5.2)(pg@8.16.3)
-      subscriptions-transport-ws: 0.9.19(graphql@15.5.2)
+      postgraphile-core: 4.14.1(graphql@15.10.1)(pg@8.16.3)
+      subscriptions-transport-ws: 0.9.19(graphql@15.10.1)
       tslib: 2.8.1
       ws: 7.5.10
     transitivePeerDependencies:
@@ -9713,11 +9712,11 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-  raw-body@3.0.0:
+  raw-body@3.0.1:
     dependencies:
       bytes: 3.1.2
       http-errors: 2.0.0
-      iconv-lite: 0.6.3
+      iconv-lite: 0.7.0
       unpipe: 1.0.0
 
   react-is@18.3.1: {}
@@ -9827,7 +9826,7 @@ snapshots:
       depd: 2.0.0
       is-promise: 4.0.0
       parseurl: 1.3.3
-      path-to-regexp: 8.2.0
+      path-to-regexp: 8.3.0
     transitivePeerDependencies:
       - supports-color
 
@@ -10088,11 +10087,11 @@ snapshots:
 
   strnum@2.1.1: {}
 
-  subscriptions-transport-ws@0.9.19(graphql@15.5.2):
+  subscriptions-transport-ws@0.9.19(graphql@15.10.1):
     dependencies:
       backo2: 1.0.2
       eventemitter3: 3.1.2
-      graphql: 15.5.2
+      graphql: 15.10.1
       iterall: 1.3.0
       symbol-observable: 1.2.0
       ws: 7.5.10
@@ -10100,11 +10099,11 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  supabase-test@0.0.14(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3)):
+  supabase-test@0.0.15(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3)):
     dependencies:
-      '@launchql/types': 2.7.0(graphql@15.5.2)
+      '@launchql/types': 2.7.0(graphql@15.10.1)
       pg-env: 1.1.1
-      pgsql-test: 2.12.0(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.5.2)(pg@8.16.3))(graphql@15.5.2)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.5.2)(pg@8.16.3))
+      pgsql-test: 2.12.1(@babel/core@7.28.0)(@pgsql/types@17.6.1)(graphile-build-pg@4.14.1(graphql@15.10.1)(pg@8.16.3))(graphql@15.10.1)(pg-sql2@4.14.1(pg@8.16.3))(postgraphile-core@4.14.1(graphql@15.10.1)(pg@8.16.3))
     transitivePeerDependencies:
       - '@babel/core'
       - '@pgsql/types'
