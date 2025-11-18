@@ -41,7 +41,7 @@ pnpm test:watch
 
 ## Repository Structure
 
-This is a LaunchQL workspace combining `pnpm` and `lql` for modular Postgres packages:
+This is a LaunchQL workspace combining `pnpm` and `pgpm` for modular Postgres packages:
 
 - **`packages/supabase`** - Supabase-focused SQL, tests, and helpers
 - **`packages/hello-world`** - Demo extension showcasing RLS with users/products
